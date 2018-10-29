@@ -8,6 +8,11 @@ var pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 var position = [ [], [], [], [], [], [], [], [] ];
 var positionFEN = pieces + ' ' + turn + ' ' + castlingOptions + ' ' 
 	+ enPassantSquare + ' ' + halfMoveClock + ' ' + fullMoves;
+var pieceSelected = false;
+var selectedSquare = '';
+var moves = [];
+var positions = [];
+var halfMoves = 0;
 
 const wPimg = 'images/pw.png';
 const wRimg = 'images/rw.png';
@@ -30,9 +35,7 @@ var highlightLastMove = false;
 var autoQueen = false;
 var autoFlip = false;
 var view = 'w';
-var pieceSelected = false;
-var selectedSquare = '';
-var moves = [];
+var viewHalfMove = 0;
 
 // this associates square names with coordinates in the position array
 var coordMap = {

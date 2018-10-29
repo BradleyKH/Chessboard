@@ -18,25 +18,126 @@ need a function to...
 need an object for each kind of piece, determining how it moves. pawns need a hasMoved field.
 */
 
+function nextTurn() {
+	turn = turn == 'w' ? 'b' : 'w';
+}
 
-function onSelect(square) {
+function onSelect(newSquare) {
+  var newCoord = (coordMap[newSquare]);
   if (pieceSelected) {
+	if (newSquare == selectedSquare) {
+		pieceSelected = false;
+		updateBoard();
+		return;
+	}
     var oldCoord = (coordMap[selectedSquare]);
-    var newCoord = (coordMap[square]);
+    var newCoord = (coordMap[newSquare]);
     var piece = position[oldCoord[0]][oldCoord[1]];
-    // here I need to check if the move is legal. assuming true for now.
-    position[newCoord[0]][newCoord[1]] = piece;
-    position[oldCoord[0]][oldCoord[1]] = '';
-    pieceSelected = false;
-    encodePosition();
-    updateBoard();
+	var capture = position[newCoord[0]][newCoord[1]] != '0';
+	
+    if (isLegalMove(piece, selectedSquare, newSquare, capture)) {
+		position[newCoord[0]][newCoord[1]] = piece;
+		position[oldCoord[0]][oldCoord[1]] = '';
+		move(piece, selectedSquare, newSquare, capture);
+	}
   }
+  
+  // no piece already selected
   else {
     updateBoard();
-    if (document.getElementById(square).innerHTML != '<img src=\"images/blank.png\">') {
-      document.getElementById(square).style.background = '#FFFF00';
+	var piece = position[newCoord[0]][newCoord[1]];
+	if (turn == 'w') {
+		if (piece == piece.toLowerCase() && piece != '0') { // white cannot move black pieces
+			document.getElementById(newSquare).style.background = '#FFFF00';
+			return;
+		}
+	}
+	else {
+		if (piece == piece.toUpperCase()  && piece != '0') { // black cannot move white pieces
+			document.getElementById(newSquare).style.background = '#FFFF00';
+			return;
+		}
+	}
+		
+    if (document.getElementById(newSquare).innerHTML != '<img src=\"images/blank.png\">') {
+      document.getElementById(newSquare).style.background = '#FFFF00';
       pieceSelected = true;
-      selectedSquare = square;
+      selectedSquare = newSquare;
     }
+	if (showPossibleMoves)
+		showPossibleMoves(selectedSquare);
   }
+}
+
+function isLegalMove(piece, oldSquare, newSquare, capture) {
+	// not implemented in any meaningful way
+	
+	if (capture) {
+		var newCoord = (coordMap[newSquare]);
+		var capturedPiece = position[newCoord[0]][newCoord[1]];
+		if (piece == piece.toLowerCase() && capturedPiece == capturedPiece.toLowerCase()) {
+			updateBoard();
+			return false;		}
+			
+		else if (piece == piece.toUpperCase() && capturedPiece == capturedPiece.toUpperCase()) {
+			updateBoard();
+			return false;
+		}			
+	}
+	return true;
+}
+
+function move(piece, oldSquare, newSquare, capture) {
+	recordMove(piece, oldSquare, newSquare, capture);
+	if (piece.toLowerCase == 'p') // also if there's a capture
+		halfMoveClock = 0;
+	halfMoves++;
+	viewHalfMove++;
+	if (turn == 'b')
+		fullMoves++;
+	nextTurn();
+    pieceSelected = false;
+    encodePosition();
+	recordPosition();
+    updateBoard();
+}
+
+function showPossibleMoves(square) {
+	// not implemented
+}
+
+function recordMove(piece, oldSquare, newSquare, capture) {
+	var move = '';
+	
+	if (piece.toLowerCase() != 'p')
+		move += piece.toUpperCase();
+	
+	// need to account for multiple Knights or Rooks able to make a move (e.g. Nbd2)
+	
+	if (piece.toLowerCase() == 'p' && capture)
+		move += oldSquare[0];
+	
+	if (capture)
+		move += 'x';
+	
+	move += newSquare;
+	
+	moves[moves.length] = move;
+	
+	updateMoves();
+}
+
+function updateMoves() {
+	var moveRecord = '';
+	var moveNumber = 1;
+	
+	for (var i = 0; i < moves.length; i++) {
+		if (i % 2 == 0) {
+			moveRecord += moveNumber + '. ';
+			moveNumber++
+		}
+		moveRecord += moves[i] + ' ';
+	}
+	
+	document.getElementById('moves').innerHTML = moveRecord;
 }

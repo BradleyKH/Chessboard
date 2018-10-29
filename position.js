@@ -36,6 +36,7 @@ function parsePosition(pos) {
 	return position;
 }
 
+
 // this coverts the position array into a FEN position
 function encodePosition() {
   var FEN = '';
@@ -68,6 +69,7 @@ function encodePosition() {
   pieces = FEN;
   updateFEN();
 }
+
 
 // this updates a table cell based on the contents of an array element
 function setSquare(square, coords) {
@@ -207,12 +209,17 @@ function resetBoard() {
   view = 'w';
   pieceSelected = false;
   moves = [];
+  positions = [];
   turn = 'w';
   fullMoves = 1;
+  halfMoves = 0;
+  viewHalfMove = 0;
   halfMoveClock = 0;
   enPassantSquare = '-';
   castlingOptions = 'KQkq';
   updateBoard();
+  recordPosition();
+  updateMoves();
 }
 
 
@@ -238,4 +245,23 @@ function updateFEN() {
 function customPosition() {
  const FEN = document.getElementById('FEN').value;
  loadPosition(FEN);
+}
+
+
+function recordPosition() {
+	positions[positions.length] = positionFEN;
+}
+
+
+function previousPosition() {
+	if (viewHalfMove > 0)
+	  viewHalfMove--;
+	loadPosition(positions[viewHalfMove]);
+}
+
+
+function nextPosition() {
+	if (halfMoves > viewHalfMove)
+	  viewHalfMove++;
+	loadPosition(positions[viewHalfMove]);
 }
