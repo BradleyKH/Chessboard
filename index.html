@@ -1,7 +1,9 @@
 <html><head><title>Chessboard</title>
 
 <link rel="stylesheet" href="main.css" type="text/css">
-<script type="text/javascript" src="chess.js"></script>
+<script type="text/javascript" src="initialize.js"></script>
+<script type="text/javascript" src="position.js"></script>
+<script type="text/javascript" src="gameplay.js"></script>
 
 </head>
 
@@ -33,5 +35,15 @@
 <p>
   FEN:
   <input type="text" id="FEN">
+  <button onclick="customPosition()">Load FEN</button>
+</p>
+
+<p>
+ Load opening position:
+ <select onchange="loadPosition(this.value)">
+  <option value="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1">Starting position</option>
+  <option value="rnbqkb1r/pp2pp1p/3p1np1/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6">Sicilian Dragon</option>
+  <option value="rnbqkb1r/pp3ppp/2p1pn2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 5">Semi-Slav</option>
+ </select>
 </p>
 </body></html>
