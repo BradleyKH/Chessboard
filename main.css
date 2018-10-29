@@ -1,0 +1,67 @@
+BODY {
+  background-color: #FFFFFF;
+  font-family: arial;
+}
+
+.board {
+  border: 5px solid black;
+  border-collapse: collapse;
+  display: inline-block;
+}
+
+.board TD {
+  border: 2px solid black;
+  height: 70px;
+  width: 70px;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dark {
+  background-color: #409040;
+}
+
+.light {
+  background-color: #FFFFFF;
+}
+
+IMG {
+  height: 100%;
+  width: 100%;
+}
+
+#FEN {
+  width: 450px;
+}
+
+.flexrow {
+  display: flex;
+}
+
+.panel {
+  margin-left: 10px;
+  width: 300px;
+}
+
+.settings {
+  border: 5px solid gray;
+  width: 100%;
+  padding: 10px;
+}
+
+.moves {
+  border-left: 5px solid gray;
+  border-right: 5px solid gray;
+  border-bottom: 5px solid gray;
+  width: 100%;
+  padding: 10px;
+  height: 300px;
+}
+
+UL {
+  list-style-type: none;
+  padding: 5px;
+  margin: 0px;
+}
