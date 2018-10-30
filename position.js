@@ -1,7 +1,7 @@
 function isLetter(str) {
-  if (str == null || str.length < 1)
-    return false;
-  return str.length === 1 && str.match(/[a-z]/i);
+	if (str == null || str.length < 1)
+		return false;
+	return str.length === 1 && str.match(/[a-z]/i);
 }
 
 
@@ -20,11 +20,11 @@ function parsePosition(pos) {
 		
 		// a number x indicates a sequence of x empty cells
 		else if (!isNaN(pos[i])) {
-      for (var b = 0; b < pos[i]; b++) {
-        position[j][k] = '0';
-        k++;
-      }
-    }
+			for (var b = 0; b < pos[i]; b++) {
+				position[j][k] = '0';
+				k++;
+			}
+		}
 		
 		// a letter indicates a piece
 		else if (isLetter(pos[i])) {
@@ -39,35 +39,35 @@ function parsePosition(pos) {
 
 // this coverts the position array into a FEN position
 function encodePosition() {
-  var FEN = '';
-  var emptySquares = 0;
-  var numberWritten = false
+	var FEN = '';
+	var emptySquares = 0;
+	var numberWritten = false
 
-  for (var i = 0; i < position.length; i++) {
-    emptySquares = 0;
-    numberWritten = false;
-    for (var j = 0; j < position[i].length; j++) {      
-      if (isLetter(position[i][j])) {
-        FEN += position[i][j];
-        emptySquares = 0;
-        numberWritten = false;
-      }
-      else {
-        emptySquares++;
-        if (j < 7 && isLetter(position[i][j + 1])) {
-          FEN += emptySquares;
-          numberWritten = true;
-        }
-        else if (j == 7 && !numberWritten)
-          FEN += emptySquares;
-      }
-    }
-    if (i < 7)
-      FEN += '/';
-  }
+	for (var i = 0; i < position.length; i++) {
+		emptySquares = 0;
+		numberWritten = false;
+		for (var j = 0; j < position[i].length; j++) {      
+			if (isLetter(position[i][j])) {
+				FEN += position[i][j];
+				emptySquares = 0;
+				numberWritten = false;
+			}
+			else {
+				emptySquares++;
+				if (j < 7 && isLetter(position[i][j + 1])) {
+					FEN += emptySquares;
+					numberWritten = true;
+				}
+				else if (j == 7 && !numberWritten)
+					FEN += emptySquares;
+			}
+		}
+		if (i < 7)
+			FEN += '/';
+	}
 
-  pieces = FEN;
-  updateFEN();
+	pieces = FEN;
+	updateFEN();
 }
 
 
@@ -125,126 +125,122 @@ function setSquare(square, coords) {
 
 // this updates the table based on the contents of the position array
 function displayPosition() {
-
-  for (var key in coordMap) {
-    setSquare(key, coordMap[key]);
-  }
+	for (var key in coordMap) {
+		setSquare(key, coordMap[key]);
+	}
 }
 
 
-function createTable(view) {
-  const files = 'abcdefgh';
-  var table = document.createElement('table');
-  table.className = 'board';
+function createTable() {
+	const files = 'abcdefgh';
+	var table = document.createElement('table');
+	table.className = 'board';
 
-  if (view == 'w') {
-    for (var rank = 8; rank > 0; rank--) {
-      var tr = document.createElement('tr');
-      for (var file = 0; file < 8; file++) {
-        var td = document.createElement('td');
-        td.setAttribute('id', files[file].toString() + rank.toString());
-        td.setAttribute('onclick', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
-        if ((file % 2 != 0 && rank % 2 == 0) || (file % 2 == 0 && rank % 2 != 0))
-          td.setAttribute('class', 'dark');
-        else
-          td.setAttribute('class', 'light');
-        tr.appendChild(td);
-      }
-      table.appendChild(tr);
-    }
-  }
-  else {
-    for (var rank = 1; rank <= 8; rank++) {
-      var tr = document.createElement('tr');
-      for (var file = 7; file >= 0; file--) {
-        var td = document.createElement('td');
-        td.setAttribute('id', files[file].toString() + rank.toString());
-        td.setAttribute('onclick', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
-        if ((file % 2 != 0 && rank % 2 == 0) || (file % 2 == 0 && rank % 2 != 0))
-          td.setAttribute('class', 'dark');
-        else
-          td.setAttribute('class', 'light');
-        tr.appendChild(td);
-      }
-      table.appendChild(tr);
-    }
-  }
+	// build a table from white's point of view
+	if (view == 'w') {
+		for (var rank = 8; rank > 0; rank--) {
+			var tr = document.createElement('tr');
+			for (var file = 0; file < 8; file++) {
+				var td = document.createElement('td');
+				td.setAttribute('id', files[file].toString() + rank.toString());
+				td.setAttribute('onclick', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
+				if ((file % 2 != 0 && rank % 2 == 0) || (file % 2 == 0 && rank % 2 != 0))
+					td.setAttribute('class', 'dark');
+				else
+					td.setAttribute('class', 'light');
+				tr.appendChild(td);
+			}
+			table.appendChild(tr);
+		}
+	}
 
-  document.getElementById('chessboard').appendChild(table);
+	// build a table from black's point of view
+	else {
+		for (var rank = 1; rank <= 8; rank++) {
+			var tr = document.createElement('tr');
+			for (var file = 7; file >= 0; file--) {
+				var td = document.createElement('td');
+				td.setAttribute('id', files[file].toString() + rank.toString());
+				td.setAttribute('onclick', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
+				if ((file % 2 != 0 && rank % 2 == 0) || (file % 2 == 0 && rank % 2 != 0))
+					td.setAttribute('class', 'dark');
+				else
+					td.setAttribute('class', 'light');
+				tr.appendChild(td);
+			}
+			table.appendChild(tr);
+		}
+	}
+
+	document.getElementById('chessboard').appendChild(table);
+	updateColors();
 }
 
 
 function clearTable() {
-  const boardArea = document.getElementById('chessboard');
-  if (boardArea.childNodes.length > 0)
-    boardArea.removeChild(boardArea.childNodes[0]);
+	const boardArea = document.getElementById('chessboard');
+	if (boardArea.childNodes.length > 0)
+		boardArea.removeChild(boardArea.childNodes[0]);
 }
 
 
 function flipBoard() {
-  clearTable();
-  if (view == 'w') {
-    view = 'b';
-    createTable('b');
-  }
-  else {
-    view = 'w';
-    createTable('w');
-  }
-  displayPosition();
+	view = view == 'w' ? 'b' : 'w';
+	updateBoard();
 }
 
 
 function updateBoard() {
-  position = parsePosition(pieces);
-  clearTable();
-  createTable('w');
-  displayPosition();
-  updateFEN();
+	position = parsePosition(pieces);
+	clearTable();
+	createTable();
+	displayPosition();
+	updateFEN();
 }
 
 
 function resetBoard() {
-  pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-  view = 'w';
-  pieceSelected = false;
-  moves = [];
-  positions = [];
-  turn = 'w';
-  fullMoves = 1;
-  halfMoves = 0;
-  viewHalfMove = 0;
-  halfMoveClock = 0;
-  enPassantSquare = '-';
-  castlingOptions = 'KQkq';
-  updateBoard();
-  recordPosition();
-  updateMoves();
+	pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+	view = 'w';
+	pieceSelected = false;
+	moves = [];
+	positions = [];
+	turn = 'w';
+	fullMoves = 1;
+	halfMoves = 0;
+	viewHalfMove = 0;
+	halfMoveClock = 0;
+	enPassantSquare = '-';
+	castlingOptions = 'KQkq';
+	updateBoard();
+	recordPosition();
+	updateMoves();
 }
 
 
 function loadPosition(FEN) {
-  FEN = FEN.split(' ');
-  pieces = FEN[0];
-  turn = FEN[1];
-  castlingOptions = FEN[2];
-  enPassantSquare = FEN[3];
-  halfMoveClock = FEN[4];
-  fullMoves = FEN[5];
-  updateBoard();
+	FEN = FEN.split(' ');
+	pieces = FEN[0];
+	turn = FEN[1];
+	castlingOptions = FEN[2];
+	enPassantSquare = FEN[3];
+	halfMoveClock = FEN[4];
+	fullMoves = FEN[5];
+	updateBoard();
 }
 
 
 function updateFEN() {
-  positionFEN = pieces + ' ' + turn + ' ' + castlingOptions + ' ' 
-	+ enPassantSquare + ' ' + halfMoveClock + ' ' + fullMoves;
-  document.getElementById('FEN').value = positionFEN;
+	positionFEN = pieces + ' ' + turn + ' ' + castlingOptions + ' ' 
+		+ enPassantSquare + ' ' + halfMoveClock + ' ' + fullMoves;
+	document.getElementById('FEN').value = positionFEN;
 }
 
 
 function customPosition() {
- const FEN = document.getElementById('FEN').value;
- loadPosition(FEN);
+	const FEN = document.getElementById('FEN').value;
+	loadPosition(FEN);
+	recordPosition();
 }
 
 
@@ -255,13 +251,13 @@ function recordPosition() {
 
 function previousPosition() {
 	if (viewHalfMove > 0)
-	  viewHalfMove--;
+		viewHalfMove--;
 	loadPosition(positions[viewHalfMove]);
 }
 
 
 function nextPosition() {
 	if (halfMoves > viewHalfMove)
-	  viewHalfMove++;
+		viewHalfMove++;
 	loadPosition(positions[viewHalfMove]);
 }

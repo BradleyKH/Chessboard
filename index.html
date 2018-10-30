@@ -19,11 +19,14 @@
       <button onclick="resetBoard();">Reset</button>
       <button onclick="flipBoard();">Flip</button>
       <ul>
-        <li><input type="checkbox" id="showMoves"><label for="showMoves">Show Possible Moves</label>
-        <li><input type="checkbox" id="showCoords"><label for="showCoords">Show Coordinates</label>
-        <li><input type="checkbox" id="autoQueen"><label for="autoQueen">Auto Queen</label>
-        <li><input type="checkbox" id="autoFlip"><label for="autoFlip">Auto Flip</label>
+        <li><input type="checkbox" id="showMoves"><label for="showMoves">Show Possible Moves</label></li>
+        <li><input type="checkbox" id="showCoords"><label for="showCoords">Show Coordinates</label></li>
+        <li><input type="checkbox" id="autoQueen"><label for="autoQueen">Auto Queen</label></li>
+        <li><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()"><label for="autoFlip">Auto Flip</label></li>
+        <li>Dark color: <input type="color" id="darkColor" value="#409040" onchange="updateColors();"></li>
+        <li>Light color: <input type="color" id="lightColor" value="#FFFFFF" onchange="updateColors();"></li>
       </ul>
+      
     </div>
 
     <div class="moves" id="moves"></div>

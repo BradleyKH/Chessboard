@@ -14,6 +14,7 @@ var moves = [];
 var positions = [];
 var halfMoves = 0;
 
+// piece images
 const wPimg = 'images/pw.png';
 const wRimg = 'images/rw.png';
 const wNimg = 'images/nw.png';
@@ -28,6 +29,7 @@ const bQimg = 'images/qb.png';
 const bKimg = 'images/kb.png';
 const blank = 'images/blank.png';
 
+
 // interface options
 var showPossibleMoves = false;
 var showCoords = false;
@@ -36,6 +38,8 @@ var autoQueen = false;
 var autoFlip = false;
 var view = 'w';
 var viewHalfMove = 0;
+var selectColor = '#FFFF00';
+
 
 // this associates square names with coordinates in the position array
 var coordMap = {
@@ -111,3 +115,24 @@ f1: '75',
 g1: '76',
 h1: '77'
 };
+
+
+function updateColors() {
+	var cells = document.getElementsByTagName("td");
+	const darkColor = document.getElementById('darkColor').value;
+	const lightColor = document.getElementById('lightColor').value;
+
+	for (var i = 0; i < cells.length; i++) {
+		if (cells[i].className == 'dark')
+			cells[i].style.background = darkColor;
+		else if (cells[i].className == 'light')
+			cells[i].style.background = lightColor;
+	}
+}
+
+
+function toggleAutoFlip() {
+	autoFlip = !autoFlip;
+	view = turn;
+	updateBoard();
+}

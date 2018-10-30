@@ -20,11 +20,9 @@ BODY {
 }
 
 .dark {
-  background-color: #409040;
 }
 
 .light {
-  background-color: #FFFFFF;
 }
 
 IMG {
@@ -57,7 +55,7 @@ IMG {
   border-bottom: 5px solid gray;
   width: 100%;
   padding: 10px;
-  height: 300px;
+  height: 376px;
 }
 
 .nav {
