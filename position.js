@@ -261,3 +261,31 @@ function nextPosition() {
 		viewHalfMove++;
 	loadPosition(positions[viewHalfMove]);
 }
+
+
+function getSquare(coord) {
+	for (var key in coordMap) {
+		if (coordMap[key] == coord)
+			return key;		
+	}
+	return -1;
+}
+
+
+function getCoord(square) {
+	for (var key in coordMap) {
+		if (key == square)
+			return coordMap[key];
+	}
+	return -1;
+}
+
+
+function getPiece(input) {
+	if (!isNaN(input[0]))
+		return position[input[0]][input[1]];
+	else {
+		var coord = getCoord(input);
+		return position[coord[0]][coord[1]];
+	}
+}

@@ -136,3 +136,7 @@ function toggleAutoFlip() {
 	view = turn;
 	updateBoard();
 }
+
+function toggleSettings() {
+	
+}

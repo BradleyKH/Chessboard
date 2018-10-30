@@ -31,7 +31,7 @@ IMG {
 }
 
 #FEN {
-  width: 450px;
+  width: 500px;
 }
 
 .flexrow {
@@ -41,21 +41,23 @@ IMG {
 .panel {
   margin-left: 10px;
   width: 300px;
+  min-height: 500px;
 }
 
 .settings {
-  border: 5px solid gray;
+  border-left: 5px solid gray;
+  border-right: 5px solid gray;
+  border-top: 5px solid gray;  
   width: 100%;
   padding: 10px;
+  display: block;
 }
 
 .moves {
-  border-left: 5px solid gray;
-  border-right: 5px solid gray;
-  border-bottom: 5px solid gray;
+  border: 5px solid gray;
   width: 100%;
   padding: 10px;
-  height: 376px;
+  height: 351px;
 }
 
 .nav {
