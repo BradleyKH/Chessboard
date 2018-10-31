@@ -332,18 +332,18 @@ function parseMove(m) {
 	}
 
 	// remove any letters from the end (e.g. 'a8=Q')
-	if (isLetter(m[m.length - 1]))
+	if (isLetter(m[m.length - 1]) && m[m.length - 1] != 'O')
 		m = removeFromString(m, m[m.length - 1]);
 
-	// castling
+	// castling	
 	if (m == 'O-O' && turn == 'w' && canCastle('K'))
-		castle('K');
+		move('K', 'e1', 'g1', false);
 	else if (m == 'O-O' && turn == 'b' && canCastle('k'))
-		castle('k');
+		move('k', 'e8', 'g8', false);
 	else if (m == 'O-O-O' && turn == 'w' && canCastle('Q'))
-		castle('Q');
+		move('K', 'e1', 'c1', false);
 	else if (m == 'O-O-O' && turn == 'b' && canCastle('q'))
-		castle('q');
+		move('k', 'e8', 'c8', false);
 
 	// conventional moves
 	else {
@@ -397,12 +397,12 @@ function parseMove(m) {
 			// if m[1] != 'x', then it should be a rank (1-8), or a file (a-h) - e.g. Nbd2, R3c5
 			// see if only one of the piece candidates (should be a Rook or Knight) matches that rank/file
 			
-		}		
-	}
-
-	// move the piece
-	if (origin != '')
-		move(piece, origin, destination, capture);
+		}
+		
+		// move the piece
+		if (origin != '')
+			move(piece, origin, destination, capture);
+	}	
 }
 
 function loadMoves() {

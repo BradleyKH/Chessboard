@@ -3,7 +3,6 @@ when a pawn moves up 2 spaces, store the en passant square
 when a pawn attempts to capture, check the en passant square
 when a pawn moves, check for promotion on 8th rank
 when a piece is captured, add it to a captured array and show it on the interface
-when a king or rook moves, adjust the castling availability
 
 need a function to...
  generate move notation
@@ -12,7 +11,6 @@ need a function to...
  check for checks
  check if castling is legal
  show pawn promotion options
-need an object for each kind of piece, determining how it moves.
 */
 
 
