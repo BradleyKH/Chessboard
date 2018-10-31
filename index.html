@@ -1,6 +1,7 @@
 <html><head><title>Chessboard</title>
 
 <link rel="stylesheet" href="main.css" type="text/css">
+<script type="text/javascript" src="alerts.js"></script>
 <script type="text/javascript" src="initialize.js"></script>
 <script type="text/javascript" src="position.js"></script>
 <script type="text/javascript" src="gameplay.js"></script>
@@ -11,52 +12,90 @@
 
 <div class="flexrow">
 
-  <div><span id="chessboard"></span></div>
+	<div><span id="chessboard"></span></div>
 
-  <div class="panel">
+	<div class="panel">
 
-    <div class="settings" id="settings">
-      
-	  <ul>
-	  <!--
-		<li><input type="checkbox" id="showMoves"><label for="showMoves">Show Possible Moves</label></li>
-		<li><input type="checkbox" id="showCoords"><label for="showCoords">Show Coordinates</label></li>
-		<li><input type="checkbox" id="autoQueen"><label for="autoQueen">Auto Queen</label></li>
-		-->
-		<li><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()"><label for="autoFlip">Auto Flip</label></li>
-		<li>Dark color: <input type="color" id="darkColor" value="#409040" onchange="updateColors();"></li>
-		<li>Light color: <input type="color" id="lightColor" value="#FFFFFF" onchange="updateColors();"></li>
-	  </ul>
+		<div class="panelbox">
+			<p>
+				<b>Mode:</b>
+				<input type="radio" name="mode" id="playmode" value="play" onclick="setMode('play');" checked><label for="playmode">Play</label>
+				<input type="radio" name="mode" id="trainmode" value="train" onclick="setMode('train');"><label for="trainmode">Train</label>
+				<input type="radio" name="mode" id="settingsmode" value="settings" onclick="setMode('settings');"><label for="settingsmode">Settings</label>
+			</p>
+			<p>
+				<b>Board:</b>
+				<button onclick="resetBoard();" >Reset</button>
+				<button onclick="flipBoard();">Flip</button>
+			</p>
+		</div>
 
-    </div>
+		<div class="panelbox hide" id="settings">
 
-    <div class="moves" id="moves"></div>
+			<b>Settings</b>      
+			<p>
+				Dark color: <input type="color" id="darkColor" value="#409040" onchange="updateColors();">
+				Light color: <input type="color" id="lightColor" value="#FFFFFF" onchange="updateColors();">
+			</p>
+			<p>
+				<ul>
+				<!--
+				<li><input type="checkbox" id="showMoves"><label for="showMoves">Show Possible Moves</label></li>
+				<li><input type="checkbox" id="showCoords"><label for="showCoords">Show Coordinates</label></li>
+				<li><input type="checkbox" id="autoQueen"><label for="autoQueen">Auto Queen</label></li>
+				-->
+				<li><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()"><label for="autoFlip">Auto Flip</label></li>
+				</ul>				
+			</p>
 
-	<div class="nav">
-	  <button onclick="previousPosition()" class="navButton"> &lt;&lt; </button>
-	  <button onclick="nextPosition()" class="navButton"> &gt;&gt; </button>
+		</div>
+    
+		<div class="panelbox hide" id="trainbox">
+
+			<b>Train</b>
+		        <p>Endgame position:
+				<select onchange="loadPosition(this.value)">
+					<option value="">Coming soon</option>
+				</select>
+			</p>
+			<p>
+				<button>Hint</button>
+				<button>Show Answer</button>
+			</p>
+
+		</div>
+
+		<div class="panelbox" id="alertbox">
+
+			<b>Alerts</b>
+			<p><span id="alerts"></span></p>
+
+		</div>
+
+		<div class="panelbox" id="movebox">
+
+			<b>Moves</b>
+			<p><span id="moves"></span></p>
+		</div>
+
+		<div class="panelbox panelbottom center">
+			<button onclick="previousPosition()" class="navButton"> &lt;&lt; </button>
+			<button onclick="nextPosition()" class="navButton"> &gt;&gt; </button>
+			<p><button disabled class="navButton">Undo</button></p>
+		</div>
 	</div>
-  </div>
-
 </div>
 
 <p>
-  <button onclick="resetBoard();" >Reset</button>
-  <button onclick="flipBoard();">Flip</button>
+	<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
+	<input type="text" id="FEN" placeholder="Paste position here" class="largeInput">
+	<button onclick="customPosition()">Load FEN</button>
 </p>
 
 <p>
-  FEN:
-  <input type="text" id="FEN">
-  <button onclick="customPosition()">Load FEN</button>
+	<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
+	<input type="text" id="PGN" placeholder="Paste moves here" class="largeInput">
+	<button onclick="loadMoves()">Load PGN</button>
 </p>
 
-<p>
- Load opening position:
- <select onchange="loadPosition(this.value)">
-  <option value="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1">Starting position</option>
-  <option value="rnbqkb1r/pp2pp1p/3p1np1/8/3NP3/2N5/PPP2PPP/R1BQKB1R w KQkq - 0 6">Sicilian Dragon</option>
-  <option value="rnbqkb1r/pp3ppp/2p1pn2/3p4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 5">Semi-Slav</option>
- </select>
-</p>
 </body></html>

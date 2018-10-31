@@ -215,6 +215,27 @@ function resetBoard() {
 	updateBoard();
 	recordPosition();
 	updateMoves();
+	clearAlerts();
+}
+
+
+function clearBoard() {
+	pieces = '8/8/8/8/8/8/8/8';
+	view = 'w';
+	pieceSelected = false;
+	moves = [];
+	positions = [];
+	turn = 'w';
+	fullMoves = 1;
+	halfMoves = 0;
+	viewHalfMove = 0;
+	halfMoveClock = 0;
+	enPassantSquare = '-';
+	castlingOptions = 'KQkq';
+	updateBoard();
+	recordPosition();
+	updateMoves();
+	clearAlerts();
 }
 
 
@@ -288,4 +309,107 @@ function getPiece(input) {
 		var coord = getCoord(input);
 		return position[coord[0]][coord[1]];
 	}
+}
+
+function removeFromString(str, char) {
+	var newStr = '';
+	for (var i = 0; i < str.length; i++) {
+		if (str[i] != char)
+			newStr += str[i];
+	}
+	return newStr;
+}
+
+function parseMove(m) {
+	// ignore strings that begin with numbers
+	if (!isNaN(m[0]))
+		return;
+
+	// remove extraneous characters
+	var extras = ['+', '!', '?', '='];	
+	for (var i = 0; i < extras.length; i++) {
+	        m = removeFromString(m, extras[i]);
+	}
+
+	// remove any letters from the end (e.g. 'a8=Q')
+	if (isLetter(m[m.length - 1]))
+		m = removeFromString(m, m[m.length - 1]);
+
+	// castling
+	if (m == 'O-O' && turn == 'w' && canCastle('K'))
+		castle('K');
+	else if (m == 'O-O' && turn == 'b' && canCastle('k'))
+		castle('k');
+	else if (m == 'O-O-O' && turn == 'w' && canCastle('Q'))
+		castle('Q');
+	else if (m == 'O-O-O' && turn == 'b' && canCastle('q'))
+		castle('q');
+
+	// conventional moves
+	else {
+		// get destination square
+		var destination = m[m.length - 2] + m[m.length - 1];
+
+		// get piece type
+		var piece = '';
+		switch (m[0]) {
+			case 'K':
+			case 'N':
+			case 'B':
+			case 'Q':
+			case 'R':
+				piece = m[0];				
+				break;
+			default:
+				piece = 'P'
+				break;
+		}
+		if (turn == 'b')
+			piece = piece.toLowerCase();
+
+		// get capture boolean (useful for isLegal() below)
+		// not implemented
+		var capture = false;
+
+		// find the location(s) of all instances of piece
+		var squares = [];
+		for (var key in coordMap) {
+			if (getPiece(key) == piece)
+				squares[squares.length] = key;
+		}		
+
+		// elimate pieces that cannot legally move to the destination square
+		for (var i = squares.length - 1; i >= 0; i--) {
+			if (!isLegalMove(piece, squares[i], destination, capture))
+				squares.splice(i, 1);
+		}
+
+		// find the origin square
+		var origin = '';
+		
+		if (squares.length == 1)
+			origin = squares[0];			
+		else {
+			// get m[1] - should be an 'x', 
+
+			// if m[1] == 'x', then m[0] gives the file
+
+			// if m[1] != 'x', then it should be a rank (1-8), or a file (a-h) - e.g. Nbd2, R3c5
+			// see if only one of the piece candidates (should be a Rook or Knight) matches that rank/file
+			
+		}		
+	}
+
+	// move the piece
+	if (origin != '')
+		move(piece, origin, destination, capture);
+}
+
+function loadMoves() {
+	resetBoard();
+	const customMoves = document.getElementById('PGN').value.split(' ');
+	for (var i = 0; i < customMoves.length; i++) {
+		parseMove(customMoves[i]);
+	}
+
 }

@@ -21,16 +21,18 @@ function nextTurn() {
 }
 
 
-function onSelect(newSquare) {
+function onSelect(clickedSquare) {
 	// view is not the latest move
-	if (viewHalfMove != halfMoves)
+	if (viewHalfMove != halfMoves) {
+		warn('You are not viewing the latest position. Scroll forward to move.');
 		return;
-	
-	var newCoord = getCoord(newSquare);
+	}
+
+	var newCoord = getCoord(clickedSquare);
 	if (pieceSelected) {
 		
 		// clear the selectColor if the same piece is clicked twice
-		if (newSquare == selectedSquare) {
+		if (clickedSquare == selectedSquare) {
 			pieceSelected = false;
 			updateBoard();
 			return;
@@ -39,26 +41,27 @@ function onSelect(newSquare) {
 		var oldCoord = getCoord(selectedSquare);
 		var piece = getPiece(oldCoord);
 		var target = getPiece(newCoord);
-		var capture = target != '0' || newSquare == enPassantSquare;
+		var capture = target != '0' || clickedSquare == enPassantSquare;
 		
 		// black cannot capture black pieces
-		if (piece == piece.toLowerCase() && target == target.toLowerCase() && target != '0') { 
+		if (piece == piece.toLowerCase() && target == target.toLowerCase() && target != '0') {
 			updateBoard();
-			document.getElementById(newSquare).style.background = selectColor;
-			selectedSquare = newSquare;
+			document.getElementById(clickedSquare).style.background = selectColor;
+			selectedSquare = clickedSquare;
 			return;
 		}
 		
 		// white cannot capture white pieces
-		else if (piece == piece.toUpperCase() && target == target.toUpperCase() && target != '0') { 
+		else if (piece == piece.toUpperCase() && target == target.toUpperCase() && target != '0') {
 			updateBoard();
-			document.getElementById(newSquare).style.background = selectColor;
-			selectedSquare = newSquare;
+			document.getElementById(clickedSquare).style.background = selectColor;
+			selectedSquare = clickedSquare;
 			return;
 		}
 		
-		if (isLegalMove(piece, selectedSquare, newSquare, capture)) {
-			move(piece, selectedSquare, newSquare, capture);
+		if (isLegalMove(piece, selectedSquare, clickedSquare, capture)) {
+			move(piece, selectedSquare, clickedSquare, capture);
+			clearAlerts();
 		}
 	}
   
@@ -72,25 +75,27 @@ function onSelect(newSquare) {
 		
 		// white cannot move black pieces
 		if (turn == 'w') {
-			if (piece == piece.toLowerCase() && piece != '0') { 
-				document.getElementById(newSquare).style.background = selectColor;
+			if (piece == piece.toLowerCase() && piece != '0') {
+				warn('It is White\'s turn.');
+				document.getElementById(clickedSquare).style.background = selectColor;
 				return;
 			}
 		}
 		
 		// black cannot move white pieces
 		else {
-			if (piece == piece.toUpperCase() && piece != '0') { 
-				document.getElementById(newSquare).style.background = selectColor;
+			if (piece == piece.toUpperCase() && piece != '0') {
+				warn('It is Black\'s turn.');
+				document.getElementById(clickedSquare).style.background = selectColor;
 				return;
 			}
 		}
 		
 		// do not select empty squares
-		if (document.getElementById(newSquare).innerHTML != '<img src=\"images/blank.png\">') {
-			document.getElementById(newSquare).style.background = selectColor;
+		if (document.getElementById(clickedSquare).innerHTML != '<img src=\"images/blank.png\">') {
+			document.getElementById(clickedSquare).style.background = selectColor;
 			pieceSelected = true;
-			selectedSquare = newSquare;
+			selectedSquare = clickedSquare;
 		}
 		
 		// show possible moves if enabled
@@ -100,55 +105,84 @@ function onSelect(newSquare) {
 }
 
 
-function isLegalMove(piece, oldSquare, newSquare, capture) { // needs a lot of work
-	var newCoord = getCoord(newSquare);
-	var oldCoord = getCoord(oldSquare);
+function isLegalMove(piece, origin, destination, capture) { // needs a lot of work
+	var endCoord = getCoord(destination);
+	var startCoord = getCoord(origin);
 	
 	// check checks
 	// not implemented
 	
 	switch (piece) {
 		case 'P':
-			// the pawn move is 2 spaces forward
-			
-			// the move is 1 space forward
-			
-			// the move is 1 space diagonal
+			// white pawn moves 1 space forward
+			if (
+				!capture && // not a capture
+				origin[0] == destination[0] && // same file
+				destination[1] - origin[1] == 1 // move 1 space forward
+			)
+				return true;
+                
+			// white pawn captures
+			else if (
+				capture && // is a capture
+                destination[1] - origin[1] == 1 && Math.abs(startCoord[1] - endCoord[1]) == 1 // moves 1 space diagonally forward
+			)
+				return true;
+                
+			// white pawn moves 2 spaces forward
+			else if (
+				!capture && // not a capture
+				origin[0] == destination[0] && // same file
+				destination[1] - origin[1] == 2 && // move 2 spaces forward
+				origin[1] == '2' && // pawn is on the second rank, so it hasn't moved yet
+				getPiece((parseInt(startCoord[0]) - 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
+			)
+				return true;
+			else
+				return false;
 			break;
-		case 'P':
-			// the pawn move is 2 spaces forward
-			
-			// the move is 1 space forward
-			
-			// the move is 1 space diagonal
+		case 'p':
+			// black pawn moves 1 space forward
+			if (
+				!capture && // not a capture
+				origin[0] == destination[0] && // same file
+				origin[1] - destination[1] == 1 // move 1 space forward
+			)
+				return true;
+
+			// black pawn captures
+			else if (
+				capture && // is a capture
+                origin[1] - destination[1] == 1 && Math.abs(startCoord[1] - endCoord[1]) == 1 // moves 1 space diagonally forward
+			)
+				return true;
+                
+			// black pawn moves 2 spaces forward
+			else if (
+				!capture && // not a capture
+				origin[0] == destination[0] && // same file
+				origin[1] - destination[1] == 2 && // move 2 spaces forward
+				origin[1] == '7' && // pawn is on the seventh rank, so it hasn't moved yet
+				getPiece((parseInt(startCoord[0]) + 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
+			)
+				return true;
+			else
+				return false;
 			break;
 		case 'R':
-			// the move is on the same file
-			
-			// the move is on the same rank
-			break;
 		case 'r':
 			// the move is on the same file
 			
 			// the move is on the same rank
 			break;
 		case 'B':
-			// the move is diagonal
-			break;
 		case 'b':
 			// the move is diagonal
 			break;
 		case 'N':
-			break;
 		case 'n':
 			break;
 		case 'Q':
-			// the move is on the same file
-			
-			// the move is on the same rank
-			
-			// the move is diagonal
-			break;
 		case 'q':
 			// the move is on the same file
 			
@@ -157,27 +191,27 @@ function isLegalMove(piece, oldSquare, newSquare, capture) { // needs a lot of w
 			// the move is diagonal
 			break;
 		case 'K':
-			// the move is to an adjacent square
-			if (Math.abs(newCoord[0] - oldCoord[0]) < 2 && Math.abs(newCoord[1] - oldCoord[1]) < 2)
+			// white king moves to an adjacent square
+			if (Math.abs(endCoord[0] - startCoord[0]) < 2 && Math.abs(endCoord[1] - startCoord[1]) < 2)
 				return true;
 						
-			// the move is to a castling square
-			else if (oldSquare == 'e1' && newSquare == 'g1')
+			// white king moves to a castling square
+			else if (origin == 'e1' && destination == 'g1')
 				return canCastle('K');
-			else if (oldSquare == 'e1' && newSquare == 'c1')
+			else if (origin == 'e1' && destination == 'c1')
 				return canCastle('Q');
 			else
 				return false;
 			break;
 		case 'k':
-			// the move is to an adjacent square
-			if (Math.abs(newCoord[0] - oldCoord[0]) < 2 && Math.abs(newCoord[1] - oldCoord[1]) < 2)
+			// black king moves to an adjacent square
+			if (Math.abs(endCoord[0] - startCoord[0]) < 2 && Math.abs(endCoord[1] - startCoord[1]) < 2)
 				return true;
 			
-			// the move is to a castling square
-			else if (oldSquare == 'e8' && newSquare == 'g8')
+			// black king moves to a castling square
+			else if (origin == 'e8' && destination == 'g8')
 				return canCastle('k');
-			else if (oldSquare == 'e8' && newSquare == 'c8')
+			else if (origin == 'e8' && destination == 'c8')
 				return canCastle('q');
 			else
 				return false;
@@ -188,30 +222,30 @@ function isLegalMove(piece, oldSquare, newSquare, capture) { // needs a lot of w
 }
 
 
-function move(piece, oldSquare, newSquare, capture) {
-	var newCoord = getCoord(newSquare);
-	var oldCoord = getCoord(oldSquare);
-	position[newCoord[0]][newCoord[1]] = piece;
-	position[oldCoord[0]][oldCoord[1]] = '0';	
+function move(piece, origin, destination, capture) {
+	var endCoord = getCoord(destination);
+	var startCoord = getCoord(origin);
+	position[endCoord[0]][endCoord[1]] = piece;
+	position[startCoord[0]][startCoord[1]] = '0';	
 	
 	// update castling options for king and rook moves
 	if (piece.toLowerCase() == 'k' || piece.toLowerCase() == 'r')
-		updateCastlingOptions(piece, oldSquare[0]);
+		updateCastlingOptions(piece, origin[0]);
 	
 	// handle castling
 	if (piece.toLowerCase() == 'k') {		
-		if (oldSquare == 'e8' && newSquare == 'g8')
+		if (origin == 'e8' && destination == 'g8')
 			castle('k');
-		else if (oldSquare == 'e8' && newSquare == 'c8')
+		else if (origin == 'e8' && destination == 'c8')
 			castle('q');
-		else if (oldSquare == 'e1' && newSquare == 'g1')
+		else if (origin == 'e1' && destination == 'g1')
 			castle('K');
-		else if (oldSquare == 'e1' && newSquare == 'c1')
+		else if (origin == 'e1' && destination == 'c1')
 			castle('Q');
 	}
 	
 	// notate the move
-	recordMove(piece, oldSquare, newSquare, capture);
+	recordMove(piece, origin, destination, capture);
 	
 	// if initial pawn 2-space move, store ep square, else clear ep square
 	
@@ -241,28 +275,28 @@ function showPossibleMoves(square) {
 }
 
 
-function recordMove(piece, oldSquare, newSquare, capture) {
+function recordMove(piece, origin, destination, capture) {
 	var move = '';
 	
 	// castling
-	if (piece.toLowerCase() == 'k' && oldSquare[0] == 'e' && newSquare[0] == 'g')
+	if (piece.toLowerCase() == 'k' && origin[0] == 'e' && destination[0] == 'g')
 		move += 'O-O';
-	else if (piece.toLowerCase() == 'k' && oldSquare[0] == 'e' && newSquare[0] == 'c')
+	else if (piece.toLowerCase() == 'k' && origin[0] == 'e' && destination[0] == 'c')
 		move += 'O-O-O';
 		
 	else {
 		if (piece.toLowerCase() != 'p')
 			move += piece.toUpperCase();
 	
-		// need to account for multiple Knights or Rooks able to move to newSquare (e.g. Nbd2)
+		// need to account for multiple Knights or Rooks able to move to destination (e.g. Nbd2)
 	
 		if (piece.toLowerCase() == 'p' && capture)
-			move += oldSquare[0];
+			move += origin[0];
 		
 		if (capture)
 			move += 'x';
 		
-		move += newSquare;
+		move += destination;
 	}
 
 	// need to account for checks
@@ -368,16 +402,12 @@ function updateCastlingOptions(piece, file) {
 		
 		// remove all castling options for a color when its king moves
 		if (turn == 'w' && castlingOptions != '-') {
-			for (var i = 0; i < castlingOptions.length; i++) {
-				if (castlingOptions[i] != 'K' && castlingOptions[i] != 'Q')
-					newCastlingOptions += castlingOptions[i];
-			}
+			newCastlingOptions = removeFromString(castlingOptions, 'K');
+			newCastlingOptions = removeFromString(castlingOptions, 'Q');
 		}
 		else if (turn == 'b' && castlingOptions != '-') {
-			for (var i = 0; i < castlingOptions.length; i++) {
-				if (castlingOptions[i] != 'k' && castlingOptions[i] != 'q')
-					newCastlingOptions += castlingOptions[i];
-			}
+			newCastlingOptions = removeFromString(castlingOptions, 'k');
+			newCastlingOptions = removeFromString(castlingOptions, 'q');
 		}
 		
 		castlingOptions = newCastlingOptions == '' ? '-' : newCastlingOptions;
@@ -386,18 +416,10 @@ function updateCastlingOptions(piece, file) {
 	// queen's rook moves
 	if (piece.toLowerCase() == 'r' && file == 'a') {		
 		
-		if (turn == 'w' && castlingOptions != '-') {
-			for (var i = 0; i < castlingOptions.length; i++) {
-				if (castlingOptions[i] != 'Q')
-					newCastlingOptions += castlingOptions[i];
-			}
-		}
-		else if (turn == 'b' && castlingOptions != '-') {
-			for (var i = 0; i < castlingOptions.length; i++) {
-				if (castlingOptions[i] != 'q')
-					newCastlingOptions += castlingOptions[i];
-			}
-		}
+		if (turn == 'w' && castlingOptions != '-')
+			newCastlingOptions = removeFromString(castlingOptions, 'Q');
+		else if (turn == 'b' && castlingOptions != '-')
+			newCastlingOptions = removeFromString(castlingOptions, 'q');
 		
 		castlingOptions = newCastlingOptions == '' ? '-' : newCastlingOptions;
 	}
@@ -405,18 +427,10 @@ function updateCastlingOptions(piece, file) {
 	// king's rook moves
 	if (piece.toLowerCase() == 'r' && file == 'h') {		
 		
-		if (turn == 'w' && castlingOptions != '-') {
-			for (var i = 0; i < castlingOptions.length; i++) {
-				if (castlingOptions[i] != 'K')
-					newCastlingOptions += castlingOptions[i];
-			}
-		}
-		else if (turn == 'b' && castlingOptions != '-') {
-			for (var i = 0; i < castlingOptions.length; i++) {
-				if (castlingOptions[i] != 'k')
-					newCastlingOptions += castlingOptions[i];
-			}
-		}
+		if (turn == 'w' && castlingOptions != '-')
+			newCastlingOptions = removeFromString(castlingOptions, 'K');
+		else if (turn == 'b' && castlingOptions != '-')
+			newCastlingOptions = removeFromString(castlingOptions, 'k');
 		
 		castlingOptions = newCastlingOptions == '' ? '-' : newCastlingOptions;
 	}	

@@ -30,7 +30,7 @@ IMG {
   width: 100%;
 }
 
-#FEN {
+.largeInput {
   width: 500px;
 }
 
@@ -44,29 +44,25 @@ IMG {
   min-height: 500px;
 }
 
-.settings {
+.hide {
+    display: none;
+}
+
+.panelbox {
   border-left: 5px solid gray;
   border-right: 5px solid gray;
   border-top: 5px solid gray;  
   width: 100%;
   padding: 10px;
-  display: block;
+  min-height: 75px;
 }
 
-.moves {
-  border: 5px solid gray;
-  width: 100%;
-  padding: 10px;
-  height: 351px;
+.panelbottom {
+    border-bottom: 5px solid gray;
 }
 
-.nav {
-  border-left: 5px solid gray;
-  border-right: 5px solid gray;
-  border-bottom: 5px solid gray;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
+.center {
+    text-align: center;
 }
 
 .navButton {
@@ -77,4 +73,12 @@ UL {
   list-style-type: none;
   padding: 5px;
   margin: 0px;
+}
+
+.warn {
+  color: #FF0000;
+}
+
+.notify {
+  color: #0020FF;
 }
