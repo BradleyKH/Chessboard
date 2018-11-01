@@ -14,6 +14,6 @@ A chessboard which:
 * Queens, Rooks, and Bishops move too freely; need to account for blocked paths
 * Checks, pawn promotions, and en passant captures are unaccounted for 
 * No training positions/moves loaded
-* No features for showing/hiding board coordinates, possible moves
+* No features for showing/hiding board coordinates
 * Move parser incomplete
 * Move notation doesn't account for multiple Knights or Rooks able to move to a given square
