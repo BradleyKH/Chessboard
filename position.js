@@ -311,6 +311,22 @@ function getPiece(input) {
 	}
 }
 
+function getPieceColor(input) {
+	var piece = '';
+	if (!isNaN(input[0]))
+		piece = position[input[0]][input[1]];
+	else {
+		var coord = getCoord(input);
+		piece = position[coord[0]][coord[1]];
+	}
+	if (piece == '0')
+		return '0';
+	else if (piece == piece.toLowerCase())
+		return 'b';
+	else
+		return 'w';
+}
+
 function removeFromString(str, char) {
 	var newStr = '';
 	for (var i = 0; i < str.length; i++) {
@@ -320,6 +336,8 @@ function removeFromString(str, char) {
 	return newStr;
 }
 
+
+// takes a move (e.g. 'Nf3') as an input and executes that move on the board
 function parseMove(m) {
 	// ignore strings that begin with numbers
 	if (!isNaN(m[0]))
@@ -331,10 +349,6 @@ function parseMove(m) {
 	        m = removeFromString(m, extras[i]);
 	}
 
-	// remove any letters from the end (e.g. 'a8=Q')
-	if (isLetter(m[m.length - 1]) && m[m.length - 1] != 'O')
-		m = removeFromString(m, m[m.length - 1]);
-
 	// castling	
 	if (m == 'O-O' && turn == 'w' && canCastle('K'))
 		move('K', 'e1', 'g1', false);
@@ -344,9 +358,18 @@ function parseMove(m) {
 		move('K', 'e1', 'c1', false);
 	else if (m == 'O-O-O' && turn == 'b' && canCastle('q'))
 		move('k', 'e8', 'c8', false);
+	
+	// remove any letters from the end (e.g. 'a8=Q')
+	if (isLetter(m[m.length - 1]))
+		m = removeFromString(m, m[m.length - 1]);
 
 	// conventional moves
 	else {
+		
+		// get capture boolean (useful for isLegal() below)		
+		var mArray = m.split('x');		
+		var capture = mArray.length > 1;
+		
 		// get destination square
 		var destination = m[m.length - 2] + m[m.length - 1];
 
@@ -367,10 +390,6 @@ function parseMove(m) {
 		if (turn == 'b')
 			piece = piece.toLowerCase();
 
-		// get capture boolean (useful for isLegal() below)
-		// not implemented
-		var capture = false;
-
 		// find the location(s) of all instances of piece
 		var squares = [];
 		for (var key in coordMap) {
@@ -378,10 +397,19 @@ function parseMove(m) {
 				squares[squares.length] = key;
 		}		
 
-		// elimate pieces that cannot legally move to the destination square
+		// eliminate pieces that cannot legally move to the destination square
 		for (var i = squares.length - 1; i >= 0; i--) {
 			if (!isLegalMove(piece, squares[i], destination, capture))
 				squares.splice(i, 1);
+		}
+		
+		// pawn captures give us the origin file
+		if (mArray.length == 2 && mArray[0] == mArray[0].toLowerCase()) {
+			for (var i = squares.length - 1; i >= 0; i--) {
+				// eliminate pieces from the wrong file
+				if (squares[i][0] != mArray[0])
+					squares.splice(i, 1);
+			}
 		}
 
 		// find the origin square
@@ -390,9 +418,6 @@ function parseMove(m) {
 		if (squares.length == 1)
 			origin = squares[0];			
 		else {
-			// get m[1] - should be an 'x', 
-
-			// if m[1] == 'x', then m[0] gives the file
 
 			// if m[1] != 'x', then it should be a rank (1-8), or a file (a-h) - e.g. Nbd2, R3c5
 			// see if only one of the piece candidates (should be a Rook or Knight) matches that rank/file
@@ -405,6 +430,8 @@ function parseMove(m) {
 	}	
 }
 
+
+// parses all legal moves entered into the PGN field
 function loadMoves() {
 	resetBoard();
 	const customMoves = document.getElementById('PGN').value.split(' ');
@@ -413,3 +440,27 @@ function loadMoves() {
 	}
 
 }
+
+// darkens all squares to which the selected piece cannot move
+function showLegalMoves(origin) {
+	var piece = getPiece(origin);
+	var legalMoves = [];
+	for (var key in coordMap) {
+		document.getElementById(key).style.opacity = '0.5';
+		var capture = getPiece(key) != '0';
+		if (getPieceColor(origin) == turn && getPieceColor(key) != turn && isLegalMove(piece, origin, key, capture))
+			legalMoves[legalMoves.length] = key;
+	}
+	document.getElementById(origin).style.opacity = '1';
+	for (var i = 0; i < legalMoves.length; i++) {		
+		document.getElementById(legalMoves[i]).style.opacity = '1';
+	}
+}
+
+
+function clearLegalMoves() {
+	for (var key in coordMap) {
+		document.getElementById(key).style.opacity = '1';
+	}
+}
+

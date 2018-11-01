@@ -46,6 +46,8 @@ function onSelect(clickedSquare) {
 			updateBoard();
 			document.getElementById(clickedSquare).style.background = selectColor;
 			selectedSquare = clickedSquare;
+			if (showPossibleMoves && piece != '0')
+				showLegalMoves(selectedSquare);
 			return;
 		}
 		
@@ -54,17 +56,24 @@ function onSelect(clickedSquare) {
 			updateBoard();
 			document.getElementById(clickedSquare).style.background = selectColor;
 			selectedSquare = clickedSquare;
+			if (showPossibleMoves && piece != '0')
+				showLegalMoves(selectedSquare);
 			return;
 		}
 		
 		if (isLegalMove(piece, selectedSquare, clickedSquare, capture)) {
 			move(piece, selectedSquare, clickedSquare, capture);
 			clearAlerts();
+		} else {
+			warn('Illegal move.');
+			pieceSelected = false;
+			updateBoard();
 		}
 	}
   
 	// no piece already selected
 	else {
+		clearAlerts();
 		
 		// clear selectColor that may be on another piece of the same color
 		updateBoard();
@@ -98,7 +107,7 @@ function onSelect(clickedSquare) {
 		
 		// show possible moves if enabled
 		if (showPossibleMoves && piece != '0')
-			showPossibleMoves(selectedSquare);
+			showLegalMoves(selectedSquare);
 	}
 }
 
@@ -148,11 +157,6 @@ function move(piece, origin, destination, capture) {
 		flipBoard();
 	else
 		updateBoard();
-}
-
-
-function showPossibleMoves(square) {
-	// not implemented
 }
 
 

@@ -138,6 +138,16 @@ function toggleAutoFlip() {
 }
 
 
+function toggleShowLegalMoves() {
+	showPossibleMoves = !showPossibleMoves;
+	
+	if (!showPossibleMoves)
+		clearLegalMoves();
+	if (showPossibleMoves && pieceSelected)
+		showLegalMoves(selectedSquare);
+}
+
+
 function setMode(modeValue) {
 	mode = modeValue;
 	clearAlerts();

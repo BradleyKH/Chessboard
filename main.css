@@ -1,47 +1,15 @@
+/* All screens */
+
 BODY {
   background-color: #FFFFFF;
   font-family: arial;
 }
 
-.board {
-  border: 5px solid black;
-  border-collapse: collapse;
-  display: inline-block;
-}
 
-.board TD {
-  border: 2px solid black;
-  height: 70px;
-  width: 70px;
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.dark {
-}
-
-.light {
-}
 
 IMG {
   height: 100%;
   width: 100%;
-}
-
-.largeInput {
-  width: 500px;
-}
-
-.flexrow {
-  display: flex;
-}
-
-.panel {
-  margin-left: 10px;
-  width: 300px;
-  min-height: 500px;
 }
 
 .hide {
@@ -81,4 +49,74 @@ UL {
 
 .notify {
   color: #0020FF;
+}
+
+/* Small Screens */
+ 
+@media only screen and (max-width: 650px) {
+	.board {
+		border: 1px solid black;
+		border-collapse: collapse;
+		display: inline-block;
+		background-color: black;
+	}
+
+	.board TD {
+		border: 2px solid black;
+		height: 11vw;
+		width: 11vw;
+		margin: 0px;
+		padding: 0px;
+		text-align: center;
+		vertical-align: middle;
+	}
+	
+	.largeInput {
+		width: 100%;
+	}
+
+	.flexrow {
+		display: block;
+	}
+	
+	.panel {
+		margin: 5px;
+		width: 90%;
+	}
+}
+
+/* Large Screens */
+ 
+@media only screen and (min-width: 651px) {
+	
+	.board {
+		border: 2px solid black;
+		border-collapse: collapse;
+		display: inline-block;
+		background-color: black;
+	}
+
+	.board TD {
+		border: 2px solid black;
+		height: 70px;
+		width: 70px;
+		margin: 0px;
+		padding: 0px;
+		text-align: center;
+		vertical-align: middle;
+	}
+
+	.largeInput {
+		width: 500px;
+	}
+
+	.flexrow {
+		display: flex;
+	}
+
+	.panel {
+		margin-left: 10px;
+		width: 300px;
+		min-height: 500px;
+	}
 }

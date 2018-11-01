@@ -1,5 +1,6 @@
 <html><head><title>Chessboard</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="main.css" type="text/css">
 <script type="text/javascript" src="alerts.js"></script>
 <script type="text/javascript" src="initialize.js"></script>
@@ -40,11 +41,11 @@
 			</p>
 			<p>
 				<ul>
-				<!--
-				<li><input type="checkbox" id="showMoves"><label for="showMoves">Show Possible Moves</label></li>
+				<!--				
 				<li><input type="checkbox" id="showCoords"><label for="showCoords">Show Coordinates</label></li>
 				<li><input type="checkbox" id="autoQueen"><label for="autoQueen">Auto Queen</label></li>
 				-->
+				<li><input type="checkbox" id="showMoves" onclick="toggleShowLegalMoves()"><label for="showMoves">Show Possible Moves</label></li>
 				<li><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()"><label for="autoFlip">Auto Flip</label></li>
 				</ul>				
 			</p>
