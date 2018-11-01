@@ -4,7 +4,7 @@ when a pawn attempts to capture, check the en passant square
 when a pawn moves, check for promotion on 8th rank
 when a piece is captured, add it to a captured array and show it on the interface
 
-need a function to...
+need functions to...
  generate move notation
  parse move notation
  check for available moves
@@ -26,7 +26,6 @@ function onSelect(clickedSquare) {
 		return;
 	}
 
-	var newCoord = getCoord(clickedSquare);
 	if (pieceSelected) {
 		
 		// clear the selectColor if the same piece is clicked twice
@@ -36,23 +35,12 @@ function onSelect(clickedSquare) {
 			return;
 		}
 		
-		var oldCoord = getCoord(selectedSquare);
-		var piece = getPiece(oldCoord);
-		var target = getPiece(newCoord);
+		var piece = getPiece(selectedSquare);
+		var target = getPiece(clickedSquare);
 		var capture = target != '0' || clickedSquare == enPassantSquare;
 		
-		// black cannot capture black pieces
-		if (piece == piece.toLowerCase() && target == target.toLowerCase() && target != '0') {
-			updateBoard();
-			document.getElementById(clickedSquare).style.background = selectColor;
-			selectedSquare = clickedSquare;
-			if (showPossibleMoves && piece != '0')
-				showLegalMoves(selectedSquare);
-			return;
-		}
-		
-		// white cannot capture white pieces
-		else if (piece == piece.toUpperCase() && target == target.toUpperCase() && target != '0') {
+		// cannot capture pieces of the same color
+		if (getPieceColor(clickedSquare) == getPieceColor(selectedSquare)) {
 			updateBoard();
 			document.getElementById(clickedSquare).style.background = selectColor;
 			selectedSquare = clickedSquare;
@@ -78,28 +66,17 @@ function onSelect(clickedSquare) {
 		// clear selectColor that may be on another piece of the same color
 		updateBoard();
 		
-		var piece = position[newCoord[0]][newCoord[1]];
+		var piece = getPiece(clickedSquare);
 		
-		// white cannot move black pieces
-		if (turn == 'w') {
-			if (piece == piece.toLowerCase() && piece != '0') {
-				warn('It is White\'s turn.');
-				document.getElementById(clickedSquare).style.background = selectColor;
-				return;
-			}
-		}
-		
-		// black cannot move white pieces
-		else {
-			if (piece == piece.toUpperCase() && piece != '0') {
-				warn('It is Black\'s turn.');
-				document.getElementById(clickedSquare).style.background = selectColor;
-				return;
-			}
+		// can only move pieces of the turn color
+		if (getPieceColor(clickedSquare) != turn && piece != '0') {
+			warn('It is the other color\'s turn.');
+			document.getElementById(clickedSquare).style.background = selectColor;
+			return;			
 		}
 		
 		// do not select empty squares
-		if (document.getElementById(clickedSquare).innerHTML != '<img src=\"images/blank.png\">') {
+		else if (piece != '0') {
 			document.getElementById(clickedSquare).style.background = selectColor;
 			pieceSelected = true;
 			selectedSquare = clickedSquare;
@@ -113,6 +90,8 @@ function onSelect(clickedSquare) {
 
 
 function move(piece, origin, destination, capture) {
+	
+	// update the position array
 	var endCoord = getCoord(destination);
 	var startCoord = getCoord(origin);
 	position[endCoord[0]][endCoord[1]] = piece;

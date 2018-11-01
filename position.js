@@ -1,10 +1,3 @@
-function isLetter(str) {
-	if (str == null || str.length < 1)
-		return false;
-	return str.length === 1 && str.match(/[a-z]/i);
-}
-
-
 // this converts a FEN position into an array
 function parsePosition(pos) {
 	position = [ [], [], [], [], [], [], [], [] ];
@@ -199,8 +192,7 @@ function updateBoard() {
 }
 
 
-function resetBoard() {
-	pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+function resetVariables() {
 	view = 'w';
 	pieceSelected = false;
 	moves = [];
@@ -212,6 +204,12 @@ function resetBoard() {
 	halfMoveClock = 0;
 	enPassantSquare = '-';
 	castlingOptions = 'KQkq';
+}
+
+
+function resetBoard() {
+	pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+	resetVariables();
 	updateBoard();
 	recordPosition();
 	updateMoves();
@@ -221,17 +219,7 @@ function resetBoard() {
 
 function clearBoard() {
 	pieces = '8/8/8/8/8/8/8/8';
-	view = 'w';
-	pieceSelected = false;
-	moves = [];
-	positions = [];
-	turn = 'w';
-	fullMoves = 1;
-	halfMoves = 0;
-	viewHalfMove = 0;
-	halfMoveClock = 0;
-	enPassantSquare = '-';
-	castlingOptions = 'KQkq';
+	resetVariables();
 	updateBoard();
 	recordPosition();
 	updateMoves();
@@ -258,6 +246,7 @@ function updateFEN() {
 }
 
 
+// loads the FEN position entered into the FEN field
 function customPosition() {
 	const FEN = document.getElementById('FEN').value;
 	loadPosition(FEN);
@@ -281,59 +270,6 @@ function nextPosition() {
 	if (halfMoves > viewHalfMove)
 		viewHalfMove++;
 	loadPosition(positions[viewHalfMove]);
-}
-
-
-function getSquare(coord) {
-	for (var key in coordMap) {
-		if (coordMap[key] == coord)
-			return key;		
-	}
-	return -1;
-}
-
-
-function getCoord(square) {
-	for (var key in coordMap) {
-		if (key == square)
-			return coordMap[key];
-	}
-	return -1;
-}
-
-
-function getPiece(input) {
-	if (!isNaN(input[0]))
-		return position[input[0]][input[1]];
-	else {
-		var coord = getCoord(input);
-		return position[coord[0]][coord[1]];
-	}
-}
-
-function getPieceColor(input) {
-	var piece = '';
-	if (!isNaN(input[0]))
-		piece = position[input[0]][input[1]];
-	else {
-		var coord = getCoord(input);
-		piece = position[coord[0]][coord[1]];
-	}
-	if (piece == '0')
-		return '0';
-	else if (piece == piece.toLowerCase())
-		return 'b';
-	else
-		return 'w';
-}
-
-function removeFromString(str, char) {
-	var newStr = '';
-	for (var i = 0; i < str.length; i++) {
-		if (str[i] != char)
-			newStr += str[i];
-	}
-	return newStr;
 }
 
 
