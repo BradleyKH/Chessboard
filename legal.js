@@ -1,5 +1,3 @@
-// needs a lot of work
-
 function isLegalMove(piece, origin, destination, capture) { 
 	var endCoord = getCoord(destination);
 	var startCoord = getCoord(origin);
@@ -33,8 +31,6 @@ function isLegalMove(piece, origin, destination, capture) {
 				getPiece((parseInt(startCoord[0]) - 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
 			)
 				return true;
-			else
-				return false;
 			break;
             
 		case 'p':
@@ -61,22 +57,59 @@ function isLegalMove(piece, origin, destination, capture) {
 				getPiece((parseInt(startCoord[0]) + 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
 			)
 				return true;
-			else
-				return false;
 			break;
             
 		case 'R':
 		case 'r':
 			// Rook moves along a file
-			if (fileChange == 0)
+			if (fileChange == 0) {
+				var originRank = parseInt(startCoord[0]);
+				var destinationRank = parseInt(endCoord[0]);
+
+				// legal if adjacent square
+				if (Math.abs(originRank - destinationRank) == 1)
+					return true;
+
+				// legal if no pieces in between origin and destination
+				else if (originRank < destinationRank) {
+					for (var i = originRank + 1; i < destinationRank; i++) {
+						if (getPiece(i.toString() + startCoord[1]) != '0')
+							return false;
+					}
+				}
+				else if (originRank > destinationRank) {
+					for (var i = originRank - 1; i > destinationRank; i--) {
+						if (getPiece(i.toString() + startCoord[1]) != '0')
+							return false;
+					}
+				}
 				return true;
-				// account for pieces in the way
+			}
 			
 			// Rook moves along a rank
-			else if (rankChange == 0)
+			else if (rankChange == 0) {
+				var originFile = parseInt(startCoord[1]);
+				var destinationFile = parseInt(endCoord[1]);
+
+				// legal if adjacent square
+				if (Math.abs(originFile - destinationFile) == 1)
+					return true;
+
+				// legal if no pieces in between origin and destination
+				else if (originFile < destinationFile) {
+					for (var i = originFile + 1; i < destinationFile; i++) {
+						if (getPiece(startCoord[0] + i.toString()) != '0')
+							return false
+					}
+				}
+				else if (originFile > destinationFile) {
+					for (var i = originFile - 1; i > destinationFile; i--) {
+						if (getPiece(startCoord[0] + i.toString()) != '0')
+							return false;
+					}
+				}
 				return true;
-				// account for pieces in the way
-				
+			}	
 			break;
             
 		case 'B':
@@ -100,20 +133,60 @@ function isLegalMove(piece, origin, destination, capture) {
 		case 'Q':
 		case 'q':
 			// Queen moves along a file
-			if (fileChange == 0)
+			if (fileChange == 0) {
+				var originRank = parseInt(startCoord[0]);
+				var destinationRank = parseInt(endCoord[0]);
+
+				// legal if adjacent square
+				if (Math.abs(originRank - destinationRank) == 1)
+					return true;
+
+				// legal if no pieces in between origin and destination
+				else if (originRank < destinationRank) {
+					for (var i = originRank + 1; i < destinationRank; i++) {
+						if (getPiece(i.toString() + startCoord[1]) != '0')
+							return false;
+					}
+				}
+				else if (originRank > destinationRank) {
+					for (var i = originRank - 1; i > destinationRank; i--) {
+						if (getPiece(i.toString() + startCoord[1]) != '0')
+							return false;
+					}
+				}
 				return true;
-				// account for pieces in the way
+			}
 			
 			// Queen moves along a rank
-			else if (rankChange == 0)
+			else if (rankChange == 0) {
+				var originFile = parseInt(startCoord[1]);
+				var destinationFile = parseInt(endCoord[1]);
+
+				// legal if adjacent square
+				if (Math.abs(originFile - destinationFile) == 1)
+					return true;
+
+				// legal if no pieces in between origin and destination
+				else if (originFile < destinationFile) {
+					for (var i = originFile + 1; i < destinationFile; i++) {
+						if (getPiece(startCoord[0] + i.toString()) != '0')
+							return false
+					}
+				}
+				else if (originFile > destinationFile) {
+					for (var i = originFile - 1; i > destinationFile; i--) {
+						if (getPiece(startCoord[0] + i.toString()) != '0')
+							return false;
+					}
+				}
 				return true;
-				// account for pieces in the way			
+			}		
 			
 			// Queen moves along a diagonal
 			else if (Math.abs(rankChange) == Math.abs(fileChange))
 				return true;
 				// account for pieces in the way
-				
+			
 			break;
             
 		case 'K':
@@ -126,8 +199,6 @@ function isLegalMove(piece, origin, destination, capture) {
 				return canCastle('K');
 			else if (origin == 'e1' && destination == 'c1')
 				return canCastle('Q');
-			else
-				return false;
 			break;
             
 		case 'k':
@@ -140,8 +211,6 @@ function isLegalMove(piece, origin, destination, capture) {
 				return canCastle('k');
 			else if (origin == 'e8' && destination == 'c8')
 				return canCastle('q');
-			else
-				return false;
 			break;		
 	}
 	

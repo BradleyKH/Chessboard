@@ -218,7 +218,6 @@ function castle(corner) {
 
 
 function canCastle(corner) {
-	// not implemented
 	var isOption = false;
 	var isClear = false;	
 	
