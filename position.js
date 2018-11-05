@@ -383,7 +383,7 @@ function showLegalMoves(origin) {
 	var legalMoves = [];
 	for (var key in coordMap) {
 		document.getElementById(key).style.opacity = '0.5';
-		var capture = getPiece(key) != '0';
+		var capture = getPiece(key) != '0' || (piece.toLowerCase() == 'p' && key == enPassantSquare);
 		if (getPieceColor(origin) == turn && getPieceColor(key) != turn && isLegalMove(piece, origin, key, capture))
 			legalMoves[legalMoves.length] = key;
 	}

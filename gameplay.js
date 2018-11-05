@@ -1,6 +1,4 @@
 /*
-when a pawn moves up 2 spaces, store the en passant square
-when a pawn attempts to capture, check the en passant square
 when a pawn moves, check for promotion on 8th rank
 when a piece is captured, add it to a captured array and show it on the interface
 
@@ -37,7 +35,7 @@ function onSelect(clickedSquare) {
 		
 		var piece = getPiece(selectedSquare);
 		var target = getPiece(clickedSquare);
-		var capture = target != '0' || clickedSquare == enPassantSquare;
+		var capture = target != '0' || (piece.toLowerCase() == 'p' && clickedSquare == enPassantSquare);
 		
 		// cannot capture pieces of the same color
 		if (getPieceColor(clickedSquare) == getPieceColor(selectedSquare)) {
@@ -97,6 +95,22 @@ function move(piece, origin, destination, capture) {
 	position[endCoord[0]][endCoord[1]] = piece;
 	position[startCoord[0]][startCoord[1]] = '0';	
 	
+	// handle en passant captures
+	if (piece.toLowerCase() == 'p' && capture && destination == enPassantSquare) {
+		if (turn == 'w')
+			position[(parseInt(endCoord[0]) + 1).toString()][endCoord[1]] = '0';
+		else
+			position[(parseInt(endCoord[0]) - 1).toString()][endCoord[1]] = '0';
+	}
+
+	// update enPassantSquare
+	if (piece == 'P' && origin[1] == '2' && destination[1] == '4')
+		enPassantSquare = origin[0] + '3';
+	else if (piece == 'p' && origin[1] == '7' && destination[1] == '5')
+		enPassantSquare = origin[0] + '6';
+	else
+		enPassantSquare = '-';
+
 	// update castling options for king and rook moves
 	if (piece.toLowerCase() == 'k' || piece.toLowerCase() == 'r')
 		updateCastlingOptions(piece, origin[0]);
@@ -111,12 +125,10 @@ function move(piece, origin, destination, capture) {
 			castle('K');
 		else if (origin == 'e1' && destination == 'c1')
 			castle('Q');
-	}
+	}	
 	
 	// notate the move
 	recordMove(piece, origin, destination, capture);
-	
-	// if initial pawn 2-space move, store ep square, else clear ep square
 	
 	// update halfMoveClock for 50-move rule
 	if (piece.toLowerCase() == 'p' || capture)

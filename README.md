@@ -11,7 +11,7 @@ A chessboard which:
 
 ## Issues
 
-* Checks, pawn promotions, and en passant captures are unaccounted for 
+* Checks and pawn promotions are unaccounted for 
 * No training positions/moves loaded
 * No feature for showing/hiding board coordinates
 * Move parser incomplete
