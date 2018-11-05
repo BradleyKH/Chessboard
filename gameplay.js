@@ -4,7 +4,6 @@ when a piece is captured, add it to a captured array and show it on the interfac
 
 need functions to...
  generate move notation
- parse move notation
  check for available moves
  check for checks
  check if castling is legal
@@ -88,7 +87,35 @@ function onSelect(clickedSquare) {
 
 
 function move(piece, origin, destination, capture) {
+
+	// Account for multiple Knights or Rooks able to move to destination (e.g. Nbd2)
+	var hint = '-'
+	if (piece.toLowerCase() == 'r' || piece.toLowerCase() == 'n') {
+		// find the location(s) of all instances of piece
+		var squares = [];
+		for (var key in coordMap) {
+			if (getPiece(key) == piece)
+				squares[squares.length] = key;
+		}		
+
+		// eliminate pieces that cannot legally move to the destination square
+		for (var i = squares.length - 1; i >= 0; i--) {
+			if (!isLegalMove(piece, squares[i], destination, capture))
+				squares.splice(i, 1);
+		}
+
+		// if multiple pieces can legally move to the destination square, specify which one moved
+		if (squares.length > 1) {
+			// if files are different, specify the file
+			if (squares[0][0] != squares[1][0])
+				hint = origin[0];
+			// if files are same, specify the rank
+			else
+				hint = origin[1];
+		}
+	}
 	
+
 	// update the position array
 	var endCoord = getCoord(destination);
 	var startCoord = getCoord(origin);
@@ -128,7 +155,7 @@ function move(piece, origin, destination, capture) {
 	}	
 	
 	// notate the move
-	recordMove(piece, origin, destination, capture);
+	recordMove(piece, origin, destination, capture, hint);
 	
 	// update halfMoveClock for 50-move rule
 	if (piece.toLowerCase() == 'p' || capture)
@@ -151,7 +178,7 @@ function move(piece, origin, destination, capture) {
 }
 
 
-function recordMove(piece, origin, destination, capture) {
+function recordMove(piece, origin, destination, capture, hint) {
 	var move = '';
 	
 	// castling
@@ -161,17 +188,23 @@ function recordMove(piece, origin, destination, capture) {
 		move += 'O-O-O';
 		
 	else {
+		// Add piece identifier unless it is a pawn move
 		if (piece.toLowerCase() != 'p')
 			move += piece.toUpperCase();
-	
-		// need to account for multiple Knights or Rooks able to move to destination (e.g. Nbd2)
-	
+
+		// Account for multiple Knights or Rooks able to move to destination (e.g. Nbd2)
+		if (hint != '-')
+			move += hint;
+
+		// For pawn moves, add origin file
 		if (piece.toLowerCase() == 'p' && capture)
 			move += origin[0];
 		
+		// For captures, add 'x'
 		if (capture)
 			move += 'x';
 		
+		// Add destination square
 		move += destination;
 	}
 

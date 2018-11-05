@@ -354,10 +354,26 @@ function parseMove(m) {
 		if (squares.length == 1)
 			origin = squares[0];			
 		else {
+			// if m[1] should be a rank (1-8), or a file (a-h) - e.g. Nbd2, R3c5
 
-			// if m[1] != 'x', then it should be a rank (1-8), or a file (a-h) - e.g. Nbd2, R3c5
-			// see if only one of the piece candidates (should be a Rook or Knight) matches that rank/file
-			
+			// if m[1] is a rank, eliminate the piece from the wrong rank
+			if (!isNaN(m[1])) {
+				for (var i = squares.length - 1; i >= 0; i--) {					
+					if (squares[i][1] != m[1])
+						squares.splice(i, 1);
+				}
+			}
+
+			// if m[1] is a file, eliminate the piece from the wrong file
+			else {
+				for (var i = squares.length - 1; i >= 0; i--) {					
+					if (squares[i][0] != m[1])
+						squares.splice(i, 1);
+				}
+			}
+
+			if (squares.length == 1)
+				origin = squares[0];	
 		}
 		
 		// move the piece
