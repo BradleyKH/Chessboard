@@ -343,3 +343,22 @@ function updateCastlingOptions(piece, file) {
 		castlingOptions = newCastlingOptions == '' ? '-' : newCastlingOptions;
 	}	
 }
+
+
+function undoMove() {
+	if (moves.length > 0) {
+		moves.pop();
+		positions.pop();
+		updateMoves();
+		loadPosition(positions[positions.length - 1]);
+		halfMoves--;
+		viewHalfMove--;
+		if (turn == 'w')
+			fullMoves--;
+		pieceSelected = false;
+		if (autoFlip)
+			flipBoard();
+		else
+			updateBoard();
+	}
+}

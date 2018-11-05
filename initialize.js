@@ -150,14 +150,12 @@ function toggleShowLegalMoves() {
 
 function setMode(modeValue) {
 	mode = modeValue;
-	clearAlerts();
 	const settings = document.getElementById('settings');
 	const alertbox = document.getElementById('alertbox');
 	const moves = document.getElementById('movebox');
 	const trainbox = document.getElementById('trainbox');
 
 	settings.style.display = 'none';
-	alertbox.style.display = 'none';
 	moves.style.display = 'none';
 	trainbox.style.display = 'none';
 
@@ -165,14 +163,13 @@ function setMode(modeValue) {
 		case 'play':
 			if (pieces == '8/8/8/8/8/8/8/8')
 				resetBoard();
-			moves.style.display = 'block';
-			alertbox.style.display = 'block';			
+			moves.style.display = 'block';			
 			break;
 		case 'train':
-			alertbox.style.display = 'block';
 			moves.style.display = 'block';
 			trainbox.style.display = 'block';
 			clearBoard();
+			clearAlerts();
 			break;
 	        case 'settings':
 			settings.style.display = 'block';
