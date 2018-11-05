@@ -3,6 +3,11 @@ function isLegalMove(piece, origin, destination, capture) {
 	var startCoord = getCoord(origin);
 	var rankChange = endCoord[0] - startCoord[0];
 	var fileChange = endCoord[1] - startCoord[1];
+	var originRank = parseInt(startCoord[0]);
+	var originFile = parseInt(startCoord[1]);
+	var destinationRank = parseInt(endCoord[0]);
+	var destinationFile = parseInt(endCoord[1]);
+
 	// check checks
 	// not implemented
 	
@@ -19,7 +24,7 @@ function isLegalMove(piece, origin, destination, capture) {
 			// white pawn captures
 			else if (
 				capture && // is a capture
-                rankChange == -1 && Math.abs(fileChange) == 1 // moves 1 space diagonally forward
+				rankChange == -1 && Math.abs(fileChange) == 1 // moves 1 space diagonally forward
 			)
 				return true;
                 
@@ -28,7 +33,7 @@ function isLegalMove(piece, origin, destination, capture) {
 				!capture && // not a capture
 				fileChange == 0 && // same file
 				origin[1] == '2' && destination[1] == '4' && // pawn moves from rank 2 to rank 4
-				getPiece((parseInt(startCoord[0]) - 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
+				getPiece((originRank - 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
 			)
 				return true;
 			break;
@@ -45,7 +50,7 @@ function isLegalMove(piece, origin, destination, capture) {
 			// black pawn captures
 			else if (
 				capture && // is a capture
-                rankChange == 1 && Math.abs(fileChange) == 1 // moves 1 space diagonally forward
+				rankChange == 1 && Math.abs(fileChange) == 1 // moves 1 space diagonally forward
 			)
 				return true;
                 
@@ -54,7 +59,7 @@ function isLegalMove(piece, origin, destination, capture) {
 				!capture && // not a capture
 				fileChange == 0 && // same file
 				origin[1] == '7' && destination[1] == '5' && // pawn moves from rank 7 to rank 5
-				getPiece((parseInt(startCoord[0]) + 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
+				getPiece((originRank + 1).toString() + startCoord[1]) == '0' // no piece in front of pawn
 			)
 				return true;
 			break;
@@ -63,9 +68,6 @@ function isLegalMove(piece, origin, destination, capture) {
 		case 'r':
 			// Rook moves along a file
 			if (fileChange == 0) {
-				var originRank = parseInt(startCoord[0]);
-				var destinationRank = parseInt(endCoord[0]);
-
 				// legal if adjacent square
 				if (Math.abs(originRank - destinationRank) == 1)
 					return true;
@@ -88,9 +90,6 @@ function isLegalMove(piece, origin, destination, capture) {
 			
 			// Rook moves along a rank
 			else if (rankChange == 0) {
-				var originFile = parseInt(startCoord[1]);
-				var destinationFile = parseInt(endCoord[1]);
-
 				// legal if adjacent square
 				if (Math.abs(originFile - destinationFile) == 1)
 					return true;
@@ -115,9 +114,40 @@ function isLegalMove(piece, origin, destination, capture) {
 		case 'B':
 		case 'b':
 			// Bishop moves along a diagonal
-			if (Math.abs(rankChange) == Math.abs(fileChange))
+			if (Math.abs(rankChange) == Math.abs(fileChange)) {			
+				if (rankChange == fileChange && Math.abs(rankChange) == 1)
+					return true;
+
+				else if (rankChange == fileChange && destinationRank > originRank) {
+					for (var i = 1; i < destinationRank - originRank; i++) {
+						if (getPiece((originRank + i).toString() + (originFile + i).toString()) != '0')
+							return false;
+					}
+				}
+				
+				else if (rankChange == fileChange && destinationRank < originRank) {
+					for (var i = 1; i < originRank - destinationRank; i++) {
+						if (getPiece((originRank - i).toString() + (originFile - i).toString()) != '0')
+							return false;
+					}
+				}
+
+				else if (rankChange == -fileChange && destinationRank > originRank) {
+					for (var i = 1; i < destinationRank - originRank; i++) {
+						if (getPiece((originRank + i).toString() + (originFile - i).toString()) != '0')
+							return false;
+					}
+				}
+
+				else if (rankChange == -fileChange && destinationRank < originRank) {
+					for (var i = 1; i < originRank - destinationRank; i++) {
+						if (getPiece((originRank - i).toString() + (originFile + i).toString()) != '0')
+							return false;
+					}
+				}				
+
 				return true;
-				// account for pieces in the way
+			}
 			break;
             
 		case 'N':
@@ -134,9 +164,6 @@ function isLegalMove(piece, origin, destination, capture) {
 		case 'q':
 			// Queen moves along a file
 			if (fileChange == 0) {
-				var originRank = parseInt(startCoord[0]);
-				var destinationRank = parseInt(endCoord[0]);
-
 				// legal if adjacent square
 				if (Math.abs(originRank - destinationRank) == 1)
 					return true;
@@ -159,9 +186,6 @@ function isLegalMove(piece, origin, destination, capture) {
 			
 			// Queen moves along a rank
 			else if (rankChange == 0) {
-				var originFile = parseInt(startCoord[1]);
-				var destinationFile = parseInt(endCoord[1]);
-
 				// legal if adjacent square
 				if (Math.abs(originFile - destinationFile) == 1)
 					return true;
@@ -183,10 +207,40 @@ function isLegalMove(piece, origin, destination, capture) {
 			}		
 			
 			// Queen moves along a diagonal
-			else if (Math.abs(rankChange) == Math.abs(fileChange))
+			else if (Math.abs(rankChange) == Math.abs(fileChange)) {			
+				if (rankChange == fileChange && Math.abs(rankChange) == 1)
+					return true;
+
+				else if (rankChange == fileChange && destinationRank > originRank) {
+					for (var i = 1; i < destinationRank - originRank; i++) {
+						if (getPiece((originRank + i).toString() + (originFile + i).toString()) != '0')
+							return false;
+					}
+				}
+				
+				else if (rankChange == fileChange && destinationRank < originRank) {
+					for (var i = 1; i < originRank - destinationRank; i++) {
+						if (getPiece((originRank - i).toString() + (originFile - i).toString()) != '0')
+							return false;
+					}
+				}
+
+				else if (rankChange == -fileChange && destinationRank > originRank) {
+					for (var i = 1; i < destinationRank - originRank; i++) {
+						if (getPiece((originRank + i).toString() + (originFile - i).toString()) != '0')
+							return false;
+					}
+				}
+
+				else if (rankChange == -fileChange && destinationRank < originRank) {
+					for (var i = 1; i < originRank - destinationRank; i++) {
+						if (getPiece((originRank - i).toString() + (originFile + i).toString()) != '0')
+							return false;
+					}
+				}				
+
 				return true;
-				// account for pieces in the way
-			
+			}			
 			break;
             
 		case 'K':
