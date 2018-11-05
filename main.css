@@ -32,7 +32,7 @@ IMG {
 }
 
 .navButton {
-  width: 100px;
+  width: 150px;
 }
 
 UL {
@@ -114,7 +114,7 @@ UL {
 
 	.panel {
 		margin-left: 10px;
-		width: 300px;
+		width: 400px;
 		min-height: 500px;
 	}
 }

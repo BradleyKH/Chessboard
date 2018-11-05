@@ -76,3 +76,34 @@ function getPieceColor(input) {
 	else
 		return 'w';
 }
+
+
+// returns the square of the given color's King
+function getKingSquare(color) {
+	var king = color == 'w' ? 'K' : 'k';
+	for (var key in coordMap) {
+		if (getPiece(key) == king)
+			return key;
+	}
+}
+
+
+function isCheck(color) {
+	var kingSquare = getKingSquare(color);
+	for (var key in coordMap) {
+		var piece = getPiece(key);
+		if (getPieceColor(key) != color && isLegalMove(piece, key, kingSquare, true))
+			return true;
+	}
+	return false;
+}
+
+
+function testLegalMove(pos) {
+
+}
+
+
+function wouldBeCheck(pos, color) {
+	
+}

@@ -7,6 +7,8 @@
 <script type="text/javascript" src="position.js"></script>
 <script type="text/javascript" src="gameplay.js"></script>
 <script type="text/javascript" src="legal.js"></script>
+<script type="text/javascript" src="endgame/pawns.js"></script>
+<script type="text/javascript" src="train.js"></script>
 
 </head>
 
@@ -56,13 +58,20 @@
 
 			<b>Train</b>
 		        <p>Endgame position:
-				<select onchange="loadPosition(this.value)">
-					<option value="">Coming soon</option>
+				<select onchange="train(this.value);">
+                    <option selected value="">Select an endgame</option>
+					<option value="0">Pawn endgames</option>
 				</select>
 			</p>
 			<p>
-				<button>Hint</button>
-				<button>Show Answer</button>
+				Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>
+			</p>
+			<p>
+				<button onclick="showNextMove();">Show Answer</button> <span id="hint"></span>
+			</p>
+			<p>
+				<button onclick="previousExercise();" class="navButton">&lt;&lt; Last Exercise </button>
+				<button onclick="nextExercise();" class="navButton">Next Exercise  &gt;&gt;</button>
 			</p>
 
 		</div>
@@ -81,9 +90,9 @@
 		</div>
 
 		<div class="panelbox panelbottom center">
-			<button onclick="previousPosition();" class="navButton"> &lt;&lt; </button>
-			<button onclick="nextPosition();" class="navButton"> &gt;&gt; </button>
-			<p><button onclick="undoMove();" class="navButton">Undo</button></p>
+			<button onclick="previousPosition();" class="navButton">&lt;&lt; Previous Move</button>
+			<button onclick="nextPosition();" class="navButton">Next Move &gt;&gt;</button>
+			<p><button onclick="undoMove();" class="navButton">Undo Last Move</button></p>
 		</div>
 	</div>
 </div>

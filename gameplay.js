@@ -47,13 +47,18 @@ function onSelect(clickedSquare) {
 		}
 		
 		if (isLegalMove(piece, selectedSquare, clickedSquare, capture)) {
-			move(piece, selectedSquare, clickedSquare, capture);
-			clearAlerts();
-		} else {
+			if (mode == 'train')
+				tryMove(piece, selectedSquare, clickedSquare, capture);
+			else {
+				move(piece, selectedSquare, clickedSquare, capture);
+				clearAlerts();
+			}
+		}
+		else {
 			warn('Illegal move.');
 			pieceSelected = false;
 			updateBoard();
-		}
+		}		
 	}
   
 	// no piece already selected
@@ -113,8 +118,7 @@ function move(piece, origin, destination, capture) {
 			else
 				hint = origin[1];
 		}
-	}
-	
+	}	
 
 	// update the position array
 	var endCoord = getCoord(destination);
@@ -208,7 +212,9 @@ function recordMove(piece, origin, destination, capture, hint) {
 		move += destination;
 	}
 
-	// need to account for checks
+	var enemy = turn == 'w' ? 'b' : 'w';
+	if (isCheck(enemy))
+		move += '+';
 
 	moves[moves.length] = move;
 	

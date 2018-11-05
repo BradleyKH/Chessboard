@@ -126,7 +126,7 @@ function displayPosition() {
 
 function createTable() {
 	const files = 'abcdefgh';
-	var table = document.createElement('table');
+	var table = document.createElement('table'); 
 	table.className = 'board';
 
 	// build a table from white's point of view
@@ -208,12 +208,19 @@ function resetVariables() {
 
 
 function resetBoard() {
-	pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-	resetVariables();
-	updateBoard();
-	recordPosition();
-	updateMoves();
-	clearAlerts();
+	if (mode == 'play') {
+		pieces = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+		resetVariables();
+		updateBoard();
+		recordPosition();
+		updateMoves();
+		clearAlerts();
+	}
+	else if (mode == 'train') {
+		if (collection.length > 0) {
+			loadExercise(collection[0]);
+		}
+	}
 }
 
 
@@ -415,4 +422,3 @@ function clearLegalMoves() {
 		document.getElementById(key).style.opacity = '1';
 	}
 }
-

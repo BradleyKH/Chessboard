@@ -151,7 +151,6 @@ function toggleShowLegalMoves() {
 function setMode(modeValue) {
 	mode = modeValue;
 	const settings = document.getElementById('settings');
-	const alertbox = document.getElementById('alertbox');
 	const moves = document.getElementById('movebox');
 	const trainbox = document.getElementById('trainbox');
 
@@ -168,10 +167,11 @@ function setMode(modeValue) {
 		case 'train':
 			moves.style.display = 'block';
 			trainbox.style.display = 'block';
-			clearBoard();
+			if (pieces == 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+				clearBoard();
 			clearAlerts();
 			break;
-	        case 'settings':
+		case 'settings':
 			settings.style.display = 'block';
 			break;
 	}
