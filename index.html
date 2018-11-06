@@ -7,7 +7,9 @@
 <script type="text/javascript" src="position.js"></script>
 <script type="text/javascript" src="gameplay.js"></script>
 <script type="text/javascript" src="legal.js"></script>
-<script type="text/javascript" src="endgame/pawns.js"></script>
+
+<script type="text/javascript" src="endgame/basic.js"></script>
+<script type="text/javascript" src="endgame/pawn.js"></script>
 <script type="text/javascript" src="train.js"></script>
 
 </head>
@@ -23,14 +25,17 @@
 		<div class="panelbox">
 			<p>
 				<b>Mode:</b>
-				<input type="radio" name="mode" id="playmode" value="play" onclick="setMode('play');" checked><label for="playmode">Play</label>
-				<input type="radio" name="mode" id="trainmode" value="train" onclick="setMode('train');"><label for="trainmode">Train</label>
-				<input type="radio" name="mode" id="settingsmode" value="settings" onclick="setMode('settings');"><label for="settingsmode">Settings</label>
+				<label for="playmode"><input type="radio" name="mode" id="playmode" value="play" onclick="setMode('play');" checked>Play</label>
+				<label for="trainmode"><input type="radio" name="mode" id="trainmode" value="train" onclick="setMode('train');">Train</label>
+				<label for="settingsmode"><input type="radio" name="mode" id="settingsmode" value="settings" onclick="setMode('settings');">Settings</label>
 			</p>
 			<p>
 				<b>Board:</b>
-				<button onclick="resetBoard();" >Reset</button>
+				<button onclick="resetBoard();">Reset</button>
 				<button onclick="flipBoard();">Flip</button>
+			</p>
+			<p>
+				<b>Alerts:</b> <span id="alerts"></span> <span id="hint"></span>
 			</p>
 		</div>
 
@@ -44,11 +49,11 @@
 			<p>
 				<ul>
 				<!--				
-				<li><input type="checkbox" id="showCoords"><label for="showCoords">Show Coordinates</label></li>
-				<li><input type="checkbox" id="autoQueen"><label for="autoQueen">Auto Queen</label></li>
+				<li><label for="showCoords"><input type="checkbox" id="showCoords">Show Coordinates</label></li>
+				<li><label for="autoQueen"><input type="checkbox" id="autoQueen">Auto Queen</label></li>
 				-->
-				<li><input type="checkbox" id="showMoves" onclick="toggleShowLegalMoves()"><label for="showMoves">Show Possible Moves</label></li>
-				<li><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()"><label for="autoFlip">Auto Flip</label></li>
+				<li><label for="showMoves"><input type="checkbox" id="showMoves" onclick="toggleShowLegalMoves()">Show Possible Moves</label></li>
+				<li><label for="autoFlip"><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()">Auto Flip</label></li>
 				</ul>				
 			</p>
 
@@ -56,43 +61,36 @@
     
 		<div class="panelbox hide" id="trainbox">
 
-			<b>Train</b>
-		        <p>Endgame position:
+			<b>Training</b>
+		        <p>
 				<select onchange="train(this.value);">
-                    <option selected value="">Select an endgame</option>
-					<option value="0">Pawn endgames</option>
-				</select>
+                    <option selected disabled value="">Select an endgame</option>
+					<option value="0">Basic endgames</option>
+					<option value="1">Pawn endgames</option>
+				</select>				
 			</p>
-			<p>
-				Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>
-			</p>
-			<p>
-				<button onclick="showNextMove();">Show Answer</button> <span id="hint"></span>
-			</p>
-			<p>
-				<button onclick="previousExercise();" class="navButton">&lt;&lt; Last Exercise </button>
-				<button onclick="nextExercise();" class="navButton">Next Exercise  &gt;&gt;</button>
-			</p>
-
+			<div id="exerciseControls">
+				<p>
+					Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>
+					
+				</p>
+				<p>
+					<button onclick="previousExercise();" class="navButton">&lt;&lt; Last Exercise </button>
+					<button onclick="nextExercise();" class="navButton">Next Exercise  &gt;&gt;</button>
+				</p>
+			</div>
 		</div>
 
-		<div class="panelbox" id="alertbox">
-
-			<b>Alerts</b>
-			<p><span id="alerts"></span></p>
-
-		</div>
-
-		<div class="panelbox" id="movebox">
+		<div class="panelbox panelbottom" id="movebox">
 
 			<b>Moves</b>
 			<p><span id="moves"></span></p>
-		</div>
 
-		<div class="panelbox panelbottom center">
-			<button onclick="previousPosition();" class="navButton">&lt;&lt; Previous Move</button>
-			<button onclick="nextPosition();" class="navButton">Next Move &gt;&gt;</button>
-			<p><button onclick="undoMove();" class="navButton">Undo Last Move</button></p>
+			<div class="center">
+				<button onclick="previousPosition();" class="navButton">&lt;&lt; Previous Move</button>
+				<button onclick="nextPosition();" class="navButton">Next Move &gt;&gt;</button>
+				<p><button onclick="undoMove();" class="navButton">Undo Last Move</button></p>
+			</div>
 		</div>
 	</div>
 </div>
@@ -100,13 +98,13 @@
 <p>
 	<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
 	<input type="text" id="FEN" placeholder="Paste position here" class="largeInput">
-	<button onclick="customPosition()">Load FEN</button>
+	<button onclick="customPosition();">Load FEN</button>
 </p>
 
 <p>
 	<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
 	<input type="text" id="PGN" placeholder="Paste moves here" class="largeInput">
-	<button onclick="loadMoves()">Load PGN</button>
+	<button onclick="loadMoves();">Load PGN</button>
 </p>
 
 </body></html>
