@@ -3,10 +3,8 @@ when a pawn moves, check for promotion on 8th rank
 when a piece is captured, add it to a captured array and show it on the interface
 
 need functions to...
- generate move notation
  check for available moves
  check for checks
- check if castling is legal
  show pawn promotion options
 */
 

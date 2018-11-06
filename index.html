@@ -64,20 +64,19 @@
 			<b>Training</b>
 		        <p>
 				<select onchange="train(this.value);">
-                    <option selected disabled value="">Select an endgame</option>
+					<option selected disabled value="">Select an endgame</option>
 					<option value="0">Basic endgames</option>
 					<option value="1">Pawn endgames</option>
 				</select>				
 			</p>
 			<div id="exerciseControls">
 				<p>
-					Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>
-					
+					Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>					
 				</p>
-				<p>
+				<div class="center">
 					<button onclick="previousExercise();" class="navButton">&lt;&lt; Last Exercise </button>
 					<button onclick="nextExercise();" class="navButton">Next Exercise  &gt;&gt;</button>
-				</p>
+				</div>
 			</div>
 		</div>
 
