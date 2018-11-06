@@ -16,11 +16,11 @@
 
 <body onload="resetBoard();">
 
+<div class="container">
+
 <div class="flexrow">
 
-	<div><span id="chessboard"></span></div>
-
-	<div class="panel">
+<div class="panel">
 
 		<div class="panelbox">
 			<p>
@@ -43,17 +43,17 @@
 
 			<b>Settings</b>      
 			<p>
-				Dark color: <input type="color" id="darkColor" value="#409040" onchange="updateColors();">
+				Dark color: <input type="color" id="darkColor" value="#BE8970" onchange="updateColors();">
 				Light color: <input type="color" id="lightColor" value="#FFFFFF" onchange="updateColors();">
 			</p>
 			<p>
-				<ul>
-				<!--				
-				<li><label for="showCoords"><input type="checkbox" id="showCoords">Show Coordinates</label></li>
-				<li><label for="autoQueen"><input type="checkbox" id="autoQueen">Auto Queen</label></li>
-				-->
+				<ul>				
+				<li><label for="showCoords"><input type="checkbox" id="showCoords" checked onchange="toggleCoords();">Show Coordinates</label></li>
 				<li><label for="showMoves"><input type="checkbox" id="showMoves" onclick="toggleShowLegalMoves()">Show Possible Moves</label></li>
 				<li><label for="autoFlip"><input type="checkbox" id="autoFlip" onclick="toggleAutoFlip()">Auto Flip</label></li>
+				<!--				
+				<li><label for="autoQueen"><input type="checkbox" id="autoQueen">Auto Queen</label></li>
+				-->
 				</ul>				
 			</p>
 
@@ -71,7 +71,7 @@
 			</p>
 			<div id="exerciseControls">
 				<p>
-					Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>					
+					Exercise <span id="exerciseNumber">0</span> of <span id="collectionLength">0</span>
 				</p>
 				<div class="center">
 					<button onclick="previousExercise();" class="navButton">&lt;&lt; Last Exercise </button>
@@ -92,18 +92,22 @@
 			</div>
 		</div>
 	</div>
+
+	<div>
+		<span id="chessboard"></span>
+
+		<p>
+			<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
+			<input type="text" id="FEN" placeholder="Paste position here" class="largeInput">
+			<button onclick="customPosition();">Load FEN</button>
+		</p>
+		<p>
+			<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
+			<input type="text" id="PGN" placeholder="Paste moves here" class="largeInput">
+			<button onclick="loadMoves();">Load PGN</button>
+		</p>
+	</div>
 </div>
 
-<p>
-	<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
-	<input type="text" id="FEN" placeholder="Paste position here" class="largeInput">
-	<button onclick="customPosition();">Load FEN</button>
-</p>
-
-<p>
-	<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
-	<input type="text" id="PGN" placeholder="Paste moves here" class="largeInput">
-	<button onclick="loadMoves();">Load PGN</button>
-</p>
-
+</div>
 </body></html>

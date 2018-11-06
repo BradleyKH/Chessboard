@@ -32,7 +32,7 @@ const blank = 'images/blank.png';
 
 // interface options
 var showPossibleMoves = false;
-var showCoords = false;
+var showCoords = true;
 var highlightLastMove = false;
 var autoQueen = false;
 var autoFlip = false;
@@ -145,6 +145,13 @@ function toggleShowLegalMoves() {
 		clearLegalMoves();
 	if (showPossibleMoves && pieceSelected)
 		showLegalMoves(selectedSquare);
+}
+
+
+function toggleCoords() {
+    const coordDisplay = document.getElementById('showCoords');
+    showCoords = coordDisplay.checked;
+    updateBoard();
 }
 
 

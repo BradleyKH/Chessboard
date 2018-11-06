@@ -9,6 +9,7 @@ Play Mode
 * Undo moves and scroll backward and forward through past moves
 * Alerts user to illegal moves
 * Option to shows possible moves
+* Option to show board coordinates
 * Option to auto-flip board each turn
 * Customizable board colors
 
@@ -18,4 +19,3 @@ Train Mode
 ## Issues
 
 * Checks and pawn promotions are unaccounted for
-* No board coordinates

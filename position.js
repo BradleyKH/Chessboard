@@ -113,6 +113,19 @@ function setSquare(square, coords) {
 	}
 
 	document.getElementById(square).innerHTML = '<img src=\"' + img + '\">';
+	if (showCoords) {
+		document.getElementById('top1').innerHTML = 'a';
+		document.getElementById('top2').innerHTML = 'b';
+		document.getElementById('top3').innerHTML = 'c';
+		document.getElementById('top4').innerHTML = 'd';
+		document.getElementById('top5').innerHTML = 'e';
+		document.getElementById('top6').innerHTML = 'f';
+		document.getElementById('top7').innerHTML = 'g';
+		document.getElementById('top8').innerHTML = 'h';
+		for (var rank = 8; rank > 0; rank--) {
+			document.getElementById('left' + rank).innerHTML = rank;
+		}
+	}
 }
 
 
@@ -131,8 +144,28 @@ function createTable() {
 
 	// build a table from white's point of view
 	if (view == 'w') {
+
+		if (showCoords) {
+			// coordinates top row
+			var coordsTopRow = document.createElement('tr');
+			for (var file = 0; file <= 8; file++) {
+				var th = document.createElement('th');
+				th.setAttribute('id', 'top' + file);
+				coordsTopRow.appendChild(th);
+			}
+			table.appendChild(coordsTopRow);
+		}
+
+		// main board
 		for (var rank = 8; rank > 0; rank--) {
 			var tr = document.createElement('tr');
+			
+			if (showCoords) {
+				var coordsLeft = document.createElement('th');
+				coordsLeft.setAttribute('id', 'left' + rank);
+				tr.appendChild(coordsLeft);
+			}
+			
 			for (var file = 0; file < 8; file++) {
 				var td = document.createElement('td');
 				td.setAttribute('id', files[file].toString() + rank.toString());
@@ -149,8 +182,31 @@ function createTable() {
 
 	// build a table from black's point of view
 	else {
+
+		if (showCoords) {
+			// coordinates top row
+			var coordsTopRow = document.createElement('tr');
+            var th = document.createElement('th');
+            th.setAttribute('id', 'top0');
+            coordsTopRow.appendChild(th);
+			for (var file = 8; file > 0; file--) {
+				var th = document.createElement('th');
+				th.setAttribute('id', 'top' + file);
+				coordsTopRow.appendChild(th);
+			}
+			table.appendChild(coordsTopRow);
+		}
+		
+		// main board
 		for (var rank = 1; rank <= 8; rank++) {
 			var tr = document.createElement('tr');
+			
+			if (showCoords) {
+				var coordsLeft = document.createElement('th');
+				coordsLeft.setAttribute('id', 'left' + rank);
+				tr.appendChild(coordsLeft);
+			}
+
 			for (var file = 7; file >= 0; file--) {
 				var td = document.createElement('td');
 				td.setAttribute('id', files[file].toString() + rank.toString());
