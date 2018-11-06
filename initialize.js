@@ -151,21 +151,17 @@ function toggleShowLegalMoves() {
 function setMode(modeValue) {
 	mode = modeValue;
 	const settings = document.getElementById('settings');
-	const moves = document.getElementById('movebox');
 	const trainbox = document.getElementById('trainbox');
 
 	settings.style.display = 'none';
-	moves.style.display = 'none';
 	trainbox.style.display = 'none';
 
 	switch (modeValue) {
 		case 'play':
 			if (pieces == '8/8/8/8/8/8/8/8')
-				resetBoard();
-			moves.style.display = 'block';			
+				resetBoard();		
 			break;
 		case 'train':
-			moves.style.display = 'block';
 			trainbox.style.display = 'block';
 			if (pieces == 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
 				clearBoard();

@@ -3,7 +3,7 @@ var solution = [];
 var exerciseNumber = 0;
 
 const endgames = [
-pawnEndgames
+basicEndgames, pawnEndgames
 ];
 
 
@@ -25,6 +25,7 @@ function loadExercise(exercise) {
 	updateMoves();
 	view = turn;
 	updateBoard();
+	document.getElementById('exerciseControls').style.display = 'block';
 	document.getElementById('exerciseNumber').innerHTML = exerciseNumber + 1;
 	document.getElementById('collectionLength').innerHTML = collection.length;
 	notify(prompt);
@@ -56,7 +57,7 @@ function tryMove(piece, origin, destination, capture) {
 	if (attempt == correctMove) {
 		message += ' is correct!';
 		if (halfMoves == solution.length)
-			message += ' Exercise solved. Proceed to next exercise.';
+			message += ' Exercise solved. Proceed to <a href="javascript:void(0)" onclick="nextExercise()">next exercise</a>.';
 		else {
 			var nextMove = solution[halfMoves];
 			parseMove(nextMove);
@@ -65,7 +66,7 @@ function tryMove(piece, origin, destination, capture) {
 		notify(message);
 	}		
 	else {
-		message += ' is incorrect. Try again!';
+		message += ' is incorrect. Try again, or <a href="javascript:void(0)" onclick="showNextMove()">show next move</a>.';
 		warn(message);
 		undoMove();
 	}
