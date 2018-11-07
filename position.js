@@ -112,7 +112,7 @@ function setSquare(square, coords) {
 			break;
 	}
 
-	document.getElementById(square).innerHTML = '<img src=\"' + img + '\">';
+	document.getElementById(square).innerHTML = '<img src=\"' + img + '\" draggable=\"true\" ondragstart=\"drag(event)\">';
 	if (showCoords) {
 		document.getElementById('top1').innerHTML = 'a';
 		document.getElementById('top2').innerHTML = 'b';
@@ -169,7 +169,9 @@ function createTable() {
 			for (var file = 0; file < 8; file++) {
 				var td = document.createElement('td');
 				td.setAttribute('id', files[file].toString() + rank.toString());
-				td.setAttribute('onclick', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
+				td.setAttribute('onmousedown', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
+				td.setAttribute('ondrop', 'drop(event)');
+				td.setAttribute('ondragover', 'allowDrop(event)');
 				if ((file % 2 != 0 && rank % 2 == 0) || (file % 2 == 0 && rank % 2 != 0))
 					td.setAttribute('class', 'dark');
 				else
@@ -210,7 +212,9 @@ function createTable() {
 			for (var file = 7; file >= 0; file--) {
 				var td = document.createElement('td');
 				td.setAttribute('id', files[file].toString() + rank.toString());
-				td.setAttribute('onclick', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
+				td.setAttribute('onmousedown', 'onSelect(\'' + files[file].toString() + rank.toString() + '\')');
+				td.setAttribute('ondrop', 'drop(event)');
+				td.setAttribute('ondragover', 'allowDrop(event)');
 				if ((file % 2 != 0 && rank % 2 == 0) || (file % 2 == 0 && rank % 2 != 0))
 					td.setAttribute('class', 'dark');
 				else
@@ -478,3 +482,6 @@ function clearLegalMoves() {
 		document.getElementById(key).style.opacity = '1';
 	}
 }
+
+document.getElementById('PGN').addEventListener("input", loadMoves);
+document.getElementById('FEN').addEventListener("input", customPosition);

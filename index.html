@@ -2,9 +2,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="main.css" type="text/css">
+<script type="text/javascript" src="dragdrop.js"></script>
 <script type="text/javascript" src="helpers.js"></script>
 <script type="text/javascript" src="initialize.js"></script>
-<script type="text/javascript" src="position.js"></script>
+<script type="text/javascript" src="position.js" defer></script>
 <script type="text/javascript" src="gameplay.js"></script>
 <script type="text/javascript" src="legal.js"></script>
 
@@ -102,19 +103,18 @@
 		
 		<div class="panelbox">
 		
-		<b>Load Moves/Position</b>
-		<p>
-			<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
-			<input type="text" id="FEN" placeholder="Paste position here">
-			<button onclick="customPosition();">Load FEN</button>
-		</p>
-		<p>
-			<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
-			<input type="text" id="PGN" placeholder="Paste moves here">
-			<button onclick="loadMoves();">Load PGN</button>
-		</p>
-		</div>
-		
+			<b>Load Moves/Position</b>
+			<p>
+				<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
+				<input type="text" id="PGN" placeholder="Paste moves here">
+				<button onclick="loadMoves();">Load PGN</button>
+			</p>
+			<p>
+				<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
+				<input type="text" id="FEN" placeholder="Paste position here">
+				<button onclick="customPosition();">Load FEN</button>
+			</p>
+		</div>		
 	</div>
 </div>
 
