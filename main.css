@@ -30,13 +30,8 @@ IMG {
 }
 
 .panelbox {
-	border-bottom: 2px solid gray;
 	padding: 10px;
 	text-align: left;
-}
-
-.panelbottom {
-	border-bottom: 0px;
 }
 
 .center {
@@ -85,8 +80,8 @@ UL {
 
 	.board TD {
 		border: 0px solid black;
-		height: 10.75vw;
-		width: 10.75vw;
+		height: 10.8vw;
+		width: 10.8vw;
 		margin: 0px;
 		padding: 0px;
 		text-align: center;
@@ -102,10 +97,6 @@ UL {
 		background-color: var(--bg-color);
 	}
 	
-	.largeInput {
-		width: 100%;
-	}
-
 	.flexrow {
 		display: block;
 	}
@@ -141,10 +132,6 @@ UL {
 		margin: 0px;
 		border: 0px solid black;
 		background-color: var(--bg-color);
-	}
-
-	.largeInput {
-		width: 500px;
 	}
 
 	.flexrow {

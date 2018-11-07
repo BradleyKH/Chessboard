@@ -20,7 +20,7 @@
 
 <div class="flexrow">
 
-<div class="panel">
+	<div class="panel">
 
 		<div class="panelbox">
 			<p>
@@ -34,13 +34,10 @@
 				<button onclick="resetBoard();">Reset</button>
 				<button onclick="flipBoard();">Flip</button>
 			</p>
-			<p>
-				<b>Alerts:</b> <span id="alerts"></span> <span id="hint"></span>
-			</p>
 		</div>
 
 		<div class="panelbox hide" id="settings">
-
+			<hr>
 			<b>Settings</b>      
 			<p>
 				Dark color: <input type="color" id="darkColor" value="#BE8970" onchange="updateColors();">
@@ -60,7 +57,7 @@
 		</div>
     
 		<div class="panelbox hide" id="trainbox">
-
+			<hr>
 			<b>Training</b>
 		        <p>
 				<select onchange="train(this.value);">
@@ -79,8 +76,18 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="panelbox panelbottom" id="movebox">
+	<div>
+		<span id="chessboard"></span>
+		<p>
+			&nbsp;<span id="alerts"></span> <span id="hint"></span>
+		</p>
+	</div>
+	
+	<div class="panel">
+	
+		<div class="panelbox" id="movebox">
 
 			<b>Moves</b>
 			<p><span id="moves"></span></p>
@@ -91,21 +98,22 @@
 				<p><button onclick="undoMove();" class="navButton">Undo Last Move</button></p>
 			</div>
 		</div>
-	</div>
-
-	<div>
-		<span id="chessboard"></span>
-
+		
+		<div class="panelbox">
+		
+		<b>Load Moves/Position</b>
 		<p>
 			<a href="https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation" target="_blank">FEN</a>:
-			<input type="text" id="FEN" placeholder="Paste position here" class="largeInput">
+			<input type="text" id="FEN" placeholder="Paste position here">
 			<button onclick="customPosition();">Load FEN</button>
 		</p>
 		<p>
 			<a href="https://en.wikipedia.org/wiki/Portable_Game_Notation" target="_blank">PGN</a>:
-			<input type="text" id="PGN" placeholder="Paste moves here" class="largeInput">
+			<input type="text" id="PGN" placeholder="Paste moves here">
 			<button onclick="loadMoves();">Load PGN</button>
 		</p>
+		</div>
+		
 	</div>
 </div>
 
