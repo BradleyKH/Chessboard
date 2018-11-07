@@ -10,5 +10,8 @@ function drag(ev) {
 
 function drop(ev) {
 	ev.preventDefault();
-	onSelect(ev.path[1].id);
+	if (ev.path[1].toString() == '[object HTMLTableCellElement]')
+		onSelect(ev.path[1].id);
+	else
+		onSelect(ev.path[0].id);
 }

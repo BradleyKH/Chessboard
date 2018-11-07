@@ -111,8 +111,18 @@ function setSquare(square, coords) {
 			img = blank;
 			break;
 	}
+	
+	if (img != blank)
+		document.getElementById(square).innerHTML = '<img src=\"' + img + '\" draggable=\"true\" ondragstart=\"drag(event)\">';	
+}
 
-	document.getElementById(square).innerHTML = '<img src=\"' + img + '\" draggable=\"true\" ondragstart=\"drag(event)\">';
+
+// this updates the table based on the contents of the position array
+function displayPosition() {
+	for (var key in coordMap) {
+		setSquare(key, coordMap[key]);
+	}
+	
 	if (showCoords) {
 		document.getElementById('top1').innerHTML = 'a';
 		document.getElementById('top2').innerHTML = 'b';
@@ -129,14 +139,6 @@ function setSquare(square, coords) {
 }
 
 
-// this updates the table based on the contents of the position array
-function displayPosition() {
-	for (var key in coordMap) {
-		setSquare(key, coordMap[key]);
-	}
-}
-
-
 function createTable() {
 	const files = 'abcdefgh';
 	var table = document.createElement('table'); 
@@ -145,8 +147,8 @@ function createTable() {
 	// build a table from white's point of view
 	if (view == 'w') {
 
+		// coordinates on top row
 		if (showCoords) {
-			// coordinates top row
 			var coordsTopRow = document.createElement('tr');
 			for (var file = 0; file <= 8; file++) {
 				var th = document.createElement('th');
@@ -160,6 +162,7 @@ function createTable() {
 		for (var rank = 8; rank > 0; rank--) {
 			var tr = document.createElement('tr');
 			
+			// coordinates on left
 			if (showCoords) {
 				var coordsLeft = document.createElement('th');
 				coordsLeft.setAttribute('id', 'left' + rank);
@@ -185,8 +188,8 @@ function createTable() {
 	// build a table from black's point of view
 	else {
 
+		// coordinates on top row
 		if (showCoords) {
-			// coordinates top row
 			var coordsTopRow = document.createElement('tr');
             var th = document.createElement('th');
             th.setAttribute('id', 'top0');
@@ -203,6 +206,7 @@ function createTable() {
 		for (var rank = 1; rank <= 8; rank++) {
 			var tr = document.createElement('tr');
 			
+			// coordinates on left
 			if (showCoords) {
 				var coordsLeft = document.createElement('th');
 				coordsLeft.setAttribute('id', 'left' + rank);
