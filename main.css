@@ -71,48 +71,9 @@ UL {
 }
 
 
-/* Very Large Screens */
-
-@media only screen and (min-width: 1291px) {
-
-	.board {
-		border: 0px solid black;
-		border-collapse: collapse;
-		display: inline-block;
-		margin: 0px;
-		padding: 0px;
-		background-color: black;
-	}
-
-	.board TD {
-		border: 0px solid black;
-		height: 70px;
-		width: 70px;
-		margin: 0px;
-		padding: 0px;
-		text-align: center;
-		vertical-align: middle;
-	}
-
-	.board TH {
-		text-align: center;
-		vertical-align: middle;
-		padding: 5px;
-		margin: 0px;
-		border: 0px solid black;
-		background-color: white;
-		background-color: var(--bg-color);
-	}
-
-	.flexrow {
-		display: flex;
-	}
-}
-
-
 /* Large Screens */
 
-@media only screen and (min-width: 651px) and (max-width: 1290px) {
+@media only screen and (min-width: 651px) {
 	
 	.board {
 		border: 0px solid black;
@@ -144,7 +105,8 @@ UL {
 	}
 
 	.flexrow {
-		display: inline-block;
+		display: flex;
+		flex-wrap: wrap;
 	}
 }
 
