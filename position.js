@@ -251,6 +251,7 @@ function updateBoard() {
 	position = parsePosition(pieces);
 	clearTable();
 	createTable();
+	clearNextMove();
 	displayPosition();
 	updateFEN();
 }
