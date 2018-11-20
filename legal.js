@@ -1,4 +1,40 @@
-function isLegalMove(piece, origin, destination, capture) { 
+function isLegalMove(piece, origin, destination, capture) {
+	if (!canMove(piece, origin, destination, capture))
+		return false;
+	
+	var testPosition = [...position];
+
+	testPosition = testMove(testPosition, piece, origin, destination, capture);
+
+	if (turn == 'w' && isCheck('w', testPosition))
+		return false;
+	
+	if (turn == 'b' && isCheck('b', testPosition))
+		return false;
+	
+	return true;
+}
+
+
+function testMove(pos, piece, origin, destination, capture) {
+	var endCoord = getCoord(destination);
+	var startCoord = getCoord(origin);
+	pos[endCoord[0]][endCoord[1]] = piece;
+	pos[startCoord[0]][startCoord[1]] = '0';	
+	
+	// handle en passant captures
+	if (piece.toLowerCase() == 'p' && capture && destination == enPassantSquare) {
+		if (turn == 'w')
+			pos[(parseInt(endCoord[0]) + 1).toString()][endCoord[1]] = '0';
+		else
+			pos[(parseInt(endCoord[0]) - 1).toString()][endCoord[1]] = '0';
+	}
+
+	// handle castling
+}
+
+
+function canMove(piece, origin, destination, capture) { 
 	var endCoord = getCoord(destination);
 	var startCoord = getCoord(origin);
 	var rankChange = endCoord[0] - startCoord[0];
@@ -8,9 +44,6 @@ function isLegalMove(piece, origin, destination, capture) {
 	var destinationRank = parseInt(endCoord[0]);
 	var destinationFile = parseInt(endCoord[1]);
 
-	// check checks
-	// not implemented
-	
 	switch (piece) {
 		case 'P':
 			// white pawn moves 1 space forward

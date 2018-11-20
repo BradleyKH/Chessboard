@@ -3,7 +3,6 @@ when a pawn moves, check for promotion on 8th rank
 when a piece is captured, add it to a captured array and show it on the interface
 
 need functions to...
- check for available moves
  check for checks
  show pawn promotion options
 */
@@ -174,9 +173,8 @@ function move(piece, origin, destination, capture) {
 	encodePosition();
 	recordPosition();
 	if (autoFlip)
-		flipBoard();
-	else
-		updateBoard();
+		view = turn;
+	updateBoard();
 }
 
 
